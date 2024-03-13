@@ -283,6 +283,22 @@ export const callTotalSaledTokens = async () => {
   }
 };
 
+export const callPurchasedTokens = async (address: string) => {
+    try {
+        const { contractWithSigner, msgSender } = await callSaleContract();
+        const purchasedTokens = await contractWithSigner.purchasedTokes(address);
+        return purchasedTokens;
+    } catch (error) {
+        console.error("Error during purchasedTokens:", error);
+        //alert("There was an error during the purchasedTokens process. Please try again.");
+        ToastError.fire({
+            title:
+                "There was an error during the purchasedTokens process. Please try again.",
+        });
+        return false;
+    }
+};
+
 //Staking Contract's functions
 export const callStake = async (amount: number) => {
   try {
