@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [zoneId, setZoneId] = useState(1);
-  console.log(zoneId);
+  //console.log(zoneId);
   
   return (
     <MainLayout title="Home">

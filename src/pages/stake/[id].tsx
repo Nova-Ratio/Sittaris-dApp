@@ -24,7 +24,7 @@ export default function Home() {
   useEffect(() => {
     setZoneID(Number(id));
   }, [id, router.query]);
-  console.log(zoneID);
+
 
   useEffect(() => {
     if (zoneID) {

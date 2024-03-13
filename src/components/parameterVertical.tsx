@@ -63,7 +63,7 @@ export default function ParametreVertical({
         (acc: any, item: any) => acc + item[1][0][0],
         0
       );
-      console.log("sumSpecific", sumSpecific.toFixed(2));
+      //console.log("sumSpecific", sumSpecific.toFixed(2));
       setParameterData((prev: any) => ({
         ...prev,
         specific: sumSpecific.toFixed(2),
@@ -80,7 +80,7 @@ export default function ParametreVertical({
         (acc: any, item: any) => acc + item[1][0][0],
         0
       );
-      console.log("sumEnergy", sumEnergy.toFixed(2));
+      //console.log("sumEnergy", sumEnergy.toFixed(2));
       setParameterData((prev: any) => ({
         ...prev,
         energy: sumEnergy.toFixed(2),

@@ -20,7 +20,7 @@ export default function Synaptiq() {
       });
 
       let response = await res.json();
-      console.log("res", response);
+      //console.log("res", response);
 
       return {
         token: response.token,
@@ -57,7 +57,6 @@ export default function Synaptiq() {
         },
       });
       return res.data;
-      console.log("res", res);
     } catch (error: any) {
       console.log("error", error);
       //alert("synaptiq getEnergyData error");
@@ -73,7 +72,7 @@ export default function Synaptiq() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Plants", res.data);
+      //console.log("Plants", res.data);
 
       return res.data;
     } catch (error: any) {

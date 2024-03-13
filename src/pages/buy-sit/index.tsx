@@ -7,7 +7,7 @@ import Parametre from "@/components/parameter";
 import ParametreVertical from "@/components/parameterVertical";
 import { AppDetails } from "@/components/appDetails";
 import ZoneApexChart from "@/components/charts/zoneChart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DownIcon, ZoneDropDown } from "@/components/charts";
 import { Zones } from "@/data/zones";
 import { InfoIcon, SwitchIcon, WalletIcon } from "@/components/icons";
@@ -19,6 +19,11 @@ import {
   UsdcIcon,
 } from "@/components/icons/tokens";
 import InputText from "@/components/tailwind/input";
+import {
+  callBuyTokens,
+  callIsBeneficiary,
+} from "@/contractInteractions/useAppContract";
+import { ethers } from "ethers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -59,8 +64,33 @@ export default function Home() {
   const [paymentMethod, setPaymentMethod] = useState(paymentMethods[0].id);
   const sitPrice = 0.1;
 
-  console.log("paymentMethod", paymentMethod);
-  
+  //console.log("paymentMethod", paymentMethod);
+
+  async function buySit() {
+    try {
+      let res = await callBuyTokens(amount);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+  async function CallIsBeneficiary() {
+    try {
+      const address = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log("address", address);
+
+      let res = await callIsBeneficiary(address[0]);
+      console.log("CallIsBeneficiary", res);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  useEffect(() => {
+    CallIsBeneficiary();
+  }, []);
+
   return (
     <MainLayout title="Home">
       <TitleComp
@@ -176,7 +206,13 @@ export default function Home() {
                   <p>1 USDT = {Number(1 / sitPrice).toFixed(0)} SIT</p>
                 </div>
               </div>
-              <button className="inlineBtn w-1/3 text-white">Buy Now</button>
+              <button
+                onClick={buySit}
+                disabled={amount === 0 || !amount}
+                className="inlineBtn w-1/3 text-white disabled:cursor-not-allowed"
+              >
+                Buy Now
+              </button>
             </div>
           </div>
 

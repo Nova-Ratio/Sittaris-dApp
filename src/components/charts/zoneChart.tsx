@@ -187,7 +187,7 @@ const ZoneApexChart = ({
       }) || []
     );
   }, []);
-  console.log("data", data);
+  //console.log("data", data);
 
   return (
     <div className="w-full apexChart flex flex-col text-black dark:text-white py-0 gap-3 ">

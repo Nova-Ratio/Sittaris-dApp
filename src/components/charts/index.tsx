@@ -58,7 +58,7 @@ export function GranularitiesDropDown({
   setGranularities: Function;
 }) {
   useEffect(() => {
-    console.log("period", period);
+    //console.log("period", period);
     let gran = PeriodData.find((item) => item.key === period.key);
     if (gran?.["default-granularity"]) {
       setGranularities({

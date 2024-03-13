@@ -38,8 +38,8 @@ export default function useMetamask({
         });
         //dispatch(setChainId(chainId));
         //console.log("chainIdMetamask", chainIdMetamask);
-        const chainId = "0x89"
-        console.log("chainIdMetamask", chainIdMetamask, chainId, chainIdMetamask.toString() !== chainId);
+        const chainId = "0x61"
+        //console.log("chainIdMetamask", chainIdMetamask, chainId, chainIdMetamask.toString() !== chainId);
         
         if (chainIdMetamask.toString() !== chainId) {
           CheckChain(chainIdMetamask);
@@ -79,8 +79,8 @@ export default function useMetamask({
     const { provider, ethereum } = Ethers();
     
 
-    const chainID = "0x89"
-    console.log("chainID", chainID, id, chainId, address); 
+    const chainID = "0x61"
+    //console.log("chainID", chainID, id, chainId, address); 
     
     if (
       (id.toString() !== chainID && address) 
@@ -165,10 +165,10 @@ export default function useMetamask({
           .getNetwork()
           .then((network: { name: any }) => network.name),
       ]);
-      console.log("address", address);
+      //console.log("address", address);
       localStorage.setItem("address", address);
 
-      console.log("chainId", chainId);
+      //console.log("chainId", chainId);
       if (signature){
         Close();
         dispatch(setAddress(address));
@@ -176,9 +176,9 @@ export default function useMetamask({
           title: "Your wallet is connected successfully.",
         });
       }
-      console.log("status", ethers.formatEther(chainId));
+      //console.log("status", ethers.formatEther(chainId));
       //dispatch(setChainId(chainId));
-      console.log("chainIdNow", chainIdNow, chainId, chain[chainId].chainId);
+      //console.log("chainIdNow", chainIdNow, chainId, chain[chainId].chainId);
 
       if (chainId.toString() !== chainIdNow) {
         try {

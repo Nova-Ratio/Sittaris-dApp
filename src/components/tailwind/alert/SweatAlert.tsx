@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-
+import Chains from "@/data/chain.json"
 export const ToastError = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -38,7 +38,7 @@ export const ToastSuccess = ({ tHashLink }: { tHashLink?: string }) =>
     },
     html: tHashLink
       ? `
-  <a href="https://scan.bevm.io/tx/${tHashLink}" class="flex gap-2 items-center text-xs justify-end" target="_blank" rel="noopener">
+  <a href="https://testnet.bscscan.com/tx/${tHashLink}" class="flex gap-2 items-center text-xs justify-end" target="_blank" rel="noopener">
   View explorer
   <svg
 	width="9"

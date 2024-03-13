@@ -13,9 +13,8 @@ import useMetamask from "@/hook/useMetamask";
 import useDisconnect from "@/hook/useDisconnect";
 export default function Sidebar() {
   const router = useRouter();
-  const { currentMenu, darkMode } = useAppSelector(selectData);
+  const { currentMenu, darkMode, address, chainId } = useAppSelector(selectData);
   const dispatch = useAppDispatch();
-  const { address, chainId } = useAppSelector(selectData);
   console.log("address", address);
   const { disconnect } = useDisconnect();
   const [modal, setModal] = useState(false);
@@ -25,7 +24,7 @@ export default function Sidebar() {
     address: address,
     chainId,
   });
-  console.log("connecWallet");
+  //console.log("connecWallet");
 
   const pathname = router.pathname;
   const { id } = router.query as { id: string };

@@ -18,7 +18,7 @@ export interface AuthState {
 const initialState: AuthState = {
   address: "",
   nftId: null,
-  chainId: "0x89",
+  chainId: "0x61",
   role: "",
   currentMenu: "",
   loading: false,

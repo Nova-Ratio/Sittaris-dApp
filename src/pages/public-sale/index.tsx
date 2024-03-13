@@ -65,7 +65,7 @@ export default function Home() {
   const [paymentMethod, setPaymentMethod] = useState(paymentMethods[0].id);
   const sitPrice = 0.1;
 
-  console.log(new Date().getMonth(), 3);
+
 
   const [tokenAmount, setTokenAmount] = useState({
     sold: 500000,

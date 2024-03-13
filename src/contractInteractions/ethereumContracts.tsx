@@ -13,12 +13,12 @@ export const callSaleContract = async () => {
       method: "eth_requestAccounts",
     });
     const msgSender = metamaskAddress[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
     const abi = PSAbi;
     const publicSaleAddress = process.env.NEXT_PUBLIC_SALE_CONTRACT_ADDRESS as string;
     const publicSaleContract = new ethers.Contract(publicSaleAddress, abi, signer);
-    const contractWithSigner = publicSaleContract.connect(signer);
+    const contractWithSigner:any = publicSaleContract.connect(signer);
     return { contractWithSigner, publicSaleAddress, abi, msgSender };
   };
 
@@ -27,12 +27,12 @@ export const callSaleContract = async () => {
       method: "eth_requestAccounts",
     });
     const msgSender = metamaskAddress[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
     const abi = StakingAbi;
     const stakingAddress = process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS as string;
     const stakingContract = new ethers.Contract(stakingAddress, abi, signer);
-    const contractWithSigner = stakingContract.connect(signer);
+    const contractWithSigner:any = stakingContract.connect(signer);
     return { contractWithSigner, stakingAddress, abi, msgSender };
   };
 
@@ -41,12 +41,12 @@ export const callSaleContract = async () => {
       method: "eth_requestAccounts",
     });
     const msgSender = metamaskAddress[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
     const abi = tokenAbi;
     const tokenContractAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS as string;
     const tokenContract = new ethers.Contract(tokenContractAddress, abi, signer);
-    const contractWithSigner = tokenContract.connect(signer);
+    const contractWithSigner:any = tokenContract.connect(signer);
     return { contractWithSigner, tokenContractAddress, abi, msgSender };
   };
 
@@ -55,11 +55,11 @@ export const callSaleContract = async () => {
       method: "eth_requestAccounts",
     });
     const msgSender = metamaskAddress[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
     const abi = tokenAbi;
     const paymentTokenContractAddress = process.env.NEXT_PUBLIC_PAYMENT_TOKEN_CONTRACT_ADDRESS as string;
     const paymnetTokenContract = new ethers.Contract(paymentTokenContractAddress, abi, signer);
-    const contractWithSigner = paymnetTokenContract.connect(signer);
+    const contractWithSigner:any = paymnetTokenContract.connect(signer);
     return { contractWithSigner, paymentTokenContractAddress, abi, msgSender };
   };
