@@ -22,8 +22,11 @@ import InputText from "@/components/tailwind/input";
 import {
   callBuyTokens,
   callIsBeneficiary,
+  callPurchasedTokens,
 } from "@/contractInteractions/useAppContract";
 import { ethers } from "ethers";
+import { useAppDispatch, useAppSelector } from "@/hook/redux/hooks";
+import { selectData, setChange, setLoading } from "@/redux/auth/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,6 +56,11 @@ const paymentMethods = [
     title: "Alchemy",
     icon: <AlchemyIcon className="w-6 h-6" />,
   },
+  {
+    id: 3,
+    title: "Crypto",
+    icon: <SwitchIcon className="w-6 h-6" />,
+  },
 ];
 export default function Home() {
   const [zone, setZone] = useState({
@@ -61,35 +69,27 @@ export default function Home() {
   });
   const [token, setToken] = useState(tokens[0]);
   const [amount, setAmount] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState(paymentMethods[0].id);
-  const sitPrice = 0.1;
-
-  //console.log("paymentMethod", paymentMethod);
-
+  const [paymentMethod, setPaymentMethod] = useState(paymentMethods[2].id);
+  const { loading,price:sitPrice, sitData,change } = useAppSelector(selectData);
+  const dispatch = useAppDispatch();
+  
+  
   async function buySit() {
+    dispatch(setLoading(true));
     try {
       let res = await callBuyTokens(amount);
+      if (res) {
+        console.log("res", res);
+        dispatch(setChange(!change));
+      }
     } catch (error) {
       console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
     }
   }
-  async function CallIsBeneficiary() {
-    try {
-      const address = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      console.log("address", address);
+ 
 
-      let res = await callIsBeneficiary(address[0]);
-      console.log("CallIsBeneficiary", res);
-    } catch (error) {
-      console.log("error", error);
-    }
-  }
-
-  useEffect(() => {
-    CallIsBeneficiary();
-  }, []);
 
   return (
     <MainLayout title="Home">
@@ -203,12 +203,12 @@ export default function Home() {
                       <InfoIcon className="w-2.5 h-2.5" />
                     </button>
                   </div>
-                  <p>1 USDT = {Number(1 / sitPrice).toFixed(0)} SIT</p>
+                  <p>1 USDT = {Number(1 / sitPrice).toFixed(2)} SIT</p>
                 </div>
               </div>
               <button
                 onClick={buySit}
-                disabled={amount === 0 || !amount}
+                disabled={amount === 0 || !amount || loading}
                 className="inlineBtn w-1/3 text-white disabled:cursor-not-allowed"
               >
                 Buy Now

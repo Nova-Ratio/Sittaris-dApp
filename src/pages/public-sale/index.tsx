@@ -1,72 +1,32 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import MainLayout from "@/layout/mainLayout";
-import TitleComp from "@/components/title";
-import ApexChart from "@/components/charts/mixed";
-import Parametre from "@/components/parameter";
 import ParametreVertical from "@/components/parameterVertical";
 import { AppDetails } from "@/components/appDetails";
 import ZoneApexChart from "@/components/charts/zoneChart";
-import { useState } from "react";
-import { DownIcon, ZoneDropDown } from "@/components/charts";
-import { Zones } from "@/data/zones";
-import {
-  InfoIcon,
-  LogOutIcon,
-  SwitchIcon,
-  WalletIcon,
-} from "@/components/icons";
+import { useEffect, useState } from "react";
+
 import { Token } from "@/components/token";
-import Dropdown from "@/components/tailwind/Dropdown";
-import {
-  AlchemyIcon,
-  TetherTokenIcon,
-  UsdcIcon,
-} from "@/components/icons/tokens";
+
 import InputText from "@/components/tailwind/input";
-import { LogoTextIcon } from "@/components/icons/logo";
+import TitleComp from "@/components/title";
+import { useAppDispatch, useAppSelector } from "@/hook/redux/hooks";
+import { selectData, setChange, setLoading } from "@/redux/auth/auth";
+import {
+  callBuyTokens,
+  callGetVestingInfo,
+  callPaymentTokenAllowance,
+  callPaymentTokenDecimals,
+  callSaleEndTimestamp,
+  callSaleStartTimestamp,
+  callTotalSaledTokens,
+} from "@/contractInteractions/useAppContract";
+import { callSaleContract } from "@/contractInteractions/ethereumContracts";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const tokens = [
-  {
-    id: 1,
-    symbol: "USDT",
-    icon: <TetherTokenIcon className="w-6 h-6" />,
-    key: "SIT",
-  },
-  {
-    id: 2,
-    symbol: "USDC",
-    icon: <UsdcIcon className="w-6 h-6" />,
-    key: "USD",
-  },
-];
-
-const paymentMethods = [
-  {
-    id: 1,
-    title: "Credit Card",
-    icon: <WalletIcon className="w-6 h-6" />,
-  },
-  {
-    id: 2,
-    title: "Alchemy",
-    icon: <AlchemyIcon className="w-6 h-6" />,
-  },
-];
 export default function Home() {
   const [zone, setZone] = useState({
     label: "Zone 1",
     key: "plants/P25829",
   });
-  const [token, setToken] = useState(tokens[0]);
-  const [amount, setAmount] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState(paymentMethods[0].id);
-  const sitPrice = 0.1;
-
-
-
   const [tokenAmount, setTokenAmount] = useState({
     sold: 500000,
     total: 2000000,
@@ -76,6 +36,79 @@ export default function Home() {
     total: 2400,
     claimedMonth: 1,
   });
+  const [amount, setAmount] = useState(0);
+  const {
+    loading,
+    price: sitPrice,
+    sitData,
+    change,
+  } = useAppSelector(selectData);
+  const dispatch = useAppDispatch();
+  //console.log("paymentMethod", paymentMethod);
+  console.log("sitData", sitData);
+  console.log("price", sitPrice);
+  const [timeData, setTimeData] = useState({
+    start: "2022-03-01",
+    end: "2022-03-31",
+  });
+  async function initialize() {
+    try {
+      const decimals: number = await callPaymentTokenDecimals();
+      console.log("decimals", decimals);
+      const { contractWithSigner, msgSender, publicSaleAddress } =
+        await callSaleContract();
+      const Total = await callPaymentTokenAllowance(publicSaleAddress);
+      console.log(
+        "checker",
+        (Number(Total) / 10 ** Number(decimals)).toLocaleString("fullwide", {
+          useGrouping: false,
+        })
+      );
+      let totalSaled = await callTotalSaledTokens();
+      console.log(
+        "total",
+        Number(totalSaled).toLocaleString("fullwide", { useGrouping: false })
+      );
+      setTokenAmount({
+        sold: Number(totalSaled),
+        total: 200000000000000000000,
+      });
+      if (msgSender) {
+        let vesting = await Promise.all( await callGetVestingInfo(msgSender));
+
+        console.log("vesting", vesting);
+      }
+      let startTime = await callSaleStartTimestamp();
+      let endTime = await callSaleEndTimestamp();
+      console.log("endTime", endTime);
+      setTimeData({
+        start: new Date(Number(startTime) * 1000).toLocaleDateString(),
+        end: new Date(Number(endTime) * 1000).toLocaleDateString(),
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  async function buySit() {
+    dispatch(setLoading(true));
+    try {
+      let res = await callBuyTokens(amount);
+      if (res) {
+        console.log("res", res);
+        dispatch(setChange(!change));
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
+  useEffect(() => {
+    initialize();
+  }, [change]);
+
   return (
     <MainLayout title="Home">
       <TitleComp
@@ -88,8 +121,8 @@ export default function Home() {
         </h3>
         <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
           <div className="w-1/2  gap-6 flex flex-col ">
-            <div className="card !h-fit !px-10 lg:gap-10 2xl:gap-12">
-              <div className="flex flex-col w-full items-center">
+            <div className="card !h-fit !px-10 lg:gap-10 2xl:gap-10">
+              <div className="flex flex-col w-full items-center gap-1">
                 <Image
                   src="/logo.svg"
                   alt="Logo"
@@ -98,12 +131,21 @@ export default function Home() {
                   className=" h-28 w-fit dark:text-white text-black"
                 />
                 <h3 className="font-fontspring">SIT Public Sale</h3>
+                <span className="dark:text-white/70 text-black/70">
+                  {timeData.start} - {timeData.end}
+                </span>
               </div>
               <div className="w-full flex flex-col gap-3">
                 <div className="flex gap-4 items-center w-full justify-between">
                   <span>Total Sittaris (SIT) Token Sold:</span>
                   <b>
-                    {tokenAmount.sold} / {tokenAmount.total}{" "}
+                    {Number(tokenAmount.sold).toLocaleString("fullwide", {
+                      useGrouping: false,
+                    })}{" "}
+                    /{" "}
+                    {Number(tokenAmount.total).toLocaleString("fullwide", {
+                      useGrouping: false,
+                    })}
                   </b>
                 </div>
                 <div className="w-full bg-black/10 rounded-lg h-8">
@@ -134,7 +176,13 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex w-full justify-center">
-                <button className="inlineBtn w-1/2 mb-6">Buy Now</button>
+                <button
+                  disabled={amount <= 0 || !amount || loading}
+                  onClick={buySit}
+                  className="inlineBtn w-1/2 mb-6 disabled:cursor-not-allowed"
+                >
+                  Buy Now
+                </button>
               </div>
             </div>
           </div>

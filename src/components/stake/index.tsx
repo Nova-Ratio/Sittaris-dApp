@@ -1,6 +1,17 @@
+import { selectData, setChange, setLoading } from "@/redux/auth/auth";
 import Modal from "../tailwind/Modal";
 import InputText from "../tailwind/input";
 import { Token } from "../token";
+import { useAppDispatch, useAppSelector } from "@/hook/redux/hooks";
+import {
+  callAPY,
+  callStake,
+  callStakeInfo,
+  callUnstake,
+} from "@/contractInteractions/useAppContract";
+import { useEffect, useState } from "react";
+import Loader from "../tailwind/Loader";
+import { callSaleContract } from "@/contractInteractions/ethereumContracts";
 
 export function StakeModal({
   modal,
@@ -13,9 +24,42 @@ export function StakeModal({
   amount: number;
   setAmount: any;
 }) {
+  const { sitData, loading, change } = useAppSelector(selectData);
+  const [apy, setApy] = useState(0);
+  const dispatch = useAppDispatch();
+  async function CallAPY() {
+    try {
+      let apy = await callAPY();
+      console.log("apy", apy);
+      setApy(Number(apy));
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+  async function Stake() {
+    try {
+      dispatch(setLoading(true));
+      let res = await callStake(amount);
+      console.log("res", res);
+      if (res) {
+        dispatch(setChange(!change));
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
+  useEffect(() => {
+    if (modal) {
+      CallAPY();
+    }
+  }, []);
   return (
     <Modal title="Stake SIT TOKEN" modal={modal} setModal={setModal}>
-      <div className="w-[40vw] min-h-52 flex flex-col items-center pt-8">
+      {loading && <Loader />}
+      <div className="w-[45vw] min-h-52 flex flex-col items-center pt-8">
         <div className="w-2/3 h-fit flex flex-col gap-6">
           <div className="card 2xl:p-6">
             <h4>Amount of Payment</h4>
@@ -31,19 +75,25 @@ export function StakeModal({
             </div>
             <div className="flex justify-between items-center">
               <h5 className="dark:text-white/50 text-black/50">
-                balance: 30000 SIT
+                balance: {sitData.totalBalance} SIT
               </h5>
               <div className="flex gap-3 ">
-                <button className="outlineBtn dark:border-white/60 border-black/60 !text-sm">
+                <button
+                  onClick={() => setAmount(sitData.totalBalance / 2)}
+                  className="outlineBtn dark:border-white/60 border-black/60 !text-sm"
+                >
                   Half
                 </button>
-                <button className="outlineBtn dark:border-white/60 border-black/60 !text-sm">
+                <button
+                  onClick={() => setAmount(sitData.totalBalance)}
+                  className="outlineBtn dark:border-white/60 border-black/60 !text-sm"
+                >
                   Max
                 </button>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-5 gap-3">
+          <div className="hidden  grid-cols-5 gap-3">
             {[30, 60, 90].map((item, index) => (
               <button
                 key={index}
@@ -63,7 +113,12 @@ export function StakeModal({
             <h4>Amount to be Received</h4>
             <div className="flex gap-3 justify-between items-center ">
               <div className="relative flex items-center">
-                <InputText type="text" placeholder="1" />
+                <InputText
+                  type="text"
+                  placeholder="1"
+                  disabled
+                  value={(amount * (1 + (apy / 100))).toFixed(2)}
+                />
                 <span className="absolute right-3 text-black/60 dark:text-white/60 ">
                   Days
                 </span>
@@ -72,7 +127,15 @@ export function StakeModal({
             </div>
           </div>
           <div className="flex w-full justify-end ">
-            <button className="inlineBtn w-1/2 2xl:text-xl">Stake</button>
+            <button
+              onClick={Stake}
+              disabled={
+                amount > sitData.totalBalance || amount === 0 || loading
+              }
+              className="inlineBtn w-1/2 2xl:text-xl disabled:cursor-not-allowed"
+            >
+              Stake
+            </button>
           </div>
         </div>
       </div>
@@ -91,39 +154,113 @@ export function UnstakeModal({
   amount: number;
   setAmount: any;
 }) {
+  const { sitData, loading, change } = useAppSelector(selectData);
+  const [apy, setApy] = useState(0);
+  const dispatch = useAppDispatch();
+  const [stakeData, setStakeData]: any = useState({
+    amount: 0,
+    date: "",
+    x: "",
+  });
+  async function CallAPY() {
+    try {
+      let apy = await callAPY();
+      console.log("apy", apy);
+      setApy(Number(apy));
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+  async function getStakeAmount() {
+    try {
+      dispatch(setLoading(true));
+      const { msgSender } = await callSaleContract();
+      let res = await Promise.all(await callStakeInfo(msgSender));
+      console.log("callStakeInfo", res);
+      if (res) {
+        //kalan gün hesaplanacak
+        let days = Math.floor(
+          (Date.now() - Number(res[2]) * 1000 + 30 * 24 * 60 * 60 * 1000) /
+            (1000 * 60 * 60 * 24)
+        );
+        setStakeData({
+          amount: Number(res[0]),
+          x: new Date(Number(res[1]) * 1000).toDateString(),
+          date: days,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+  async function Unstake() {
+    try {
+      dispatch(setLoading(true));
+      let res = await callUnstake(amount);
+      console.log("res", res);
+      if (res) {
+        dispatch(setChange(!change));
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
+  useEffect(() => {
+    if (unstakeModal) {
+      CallAPY();
+      getStakeAmount();
+    }
+  }, [change, unstakeModal]);
   return (
     <Modal
       title="Unstake SIT Token"
       modal={unstakeModal}
       setModal={setUnstakeModal}
     >
+      {loading && <Loader />}
       <div className="w-[40vw] min-h-52 flex flex-col items-center pt-8">
         <div className="w-2/3 h-fit flex flex-col gap-6">
           <div className="card 2xl:p-6">
             <div className="flex gap-4 items-center justify-between text-xl">
               <Token amount={"SIT"} />
-              3000
+              {stakeData.amount}
             </div>
             <div className="flex justify-between items-center pt-3 font-normal text-sm">
-              <h5 className="">balance: 30000 SIT</h5>
+              <h5 className="">balance: {sitData.totalBalance} SIT</h5>
 
-              <h5 className="">Unstaking Period: 21 Days</h5>
+              <h5 className="">
+                Unstaking Period: {stakeData.date ? stakeData.date : "0"} Days
+              </h5>
             </div>
           </div>
           <div className="grid grid-cols-6 gap-3">
             {[25, 50, 75].map((item, index) => (
               <button
                 key={index}
+                onClick={() => setAmount(stakeData.amount * (item / 100))}
                 className="dark:text-white/50 text-black/50 border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2"
               >
                 {item}%
               </button>
             ))}
-            <button className="dark:text-white/50 text-black/50 border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2">
+            <button
+              onClick={() => setAmount(stakeData.amount)}
+              className="dark:text-white/50 text-black/50 border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2"
+            >
               Max
             </button>
             <div className="col-span-2 relative flex items-center">
-              <InputText type="text" placeholder="1" />
+              <InputText
+                type="text"
+                value={amount}
+                onChange={(e: any) => setAmount(Number(e.target.value) || 0)}
+                placeholder="1"
+              />
               <span className="absolute right-3 text-black/60 dark:text-white/60 ">
                 SIT
               </span>
@@ -131,7 +268,13 @@ export function UnstakeModal({
           </div>
 
           <div className="flex w-full justify-end ">
-            <button className="inlineBtn w-1/2 2xl:text-xl">Unstake</button>
+            <button
+              onClick={Unstake}
+              disabled={amount > stakeData.amount || amount === 0 || loading}
+              className="inlineBtn w-1/2 2xl:text-xl"
+            >
+              Unstake
+            </button>
           </div>
         </div>
       </div>

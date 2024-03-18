@@ -2,22 +2,74 @@ import pb from "@/lib/pocketbase";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Loader from "./tailwind/loader";
-import { useAppSelector } from "@/hook/redux/hooks";
-import { selectData } from "@/redux/auth/auth";
+import { useAppDispatch, useAppSelector } from "@/hook/redux/hooks";
+import {
+  selectData,
+  setLoading,
+  setSitData,
+  setSitPrice,
+} from "@/redux/auth/auth";
 import { LogoTextIcon } from "./icons/logo";
-import { ArrowLeftGradientIcon } from "./icons";
 import { useRouter } from "next/router";
+import Loader from "./tailwind/Loader";
+import {
+  callBalanceOfPaymentToken,
+  callBalanceOfSit,
+  callGetPrice,
+  callIsBeneficiary,
+  callPaymentTokenDecimals,
+  callPurchasedTokens,
+} from "@/contractInteractions/useAppContract";
 
 export default function Header() {
-  const [loading, setLoading] = useState(false);
-  const { loading: Loading } = useAppSelector(selectData);
+  const { loading, change, sitData: data,address } = useAppSelector(selectData);
+  const [usdcBalance, setUsdcBalance] = useState(0);
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const { pathname } = router;
+  async function initialize() {
+    dispatch(setLoading(true));
+    try {
+      const address = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log("address", address);
+      if (address) {
+        const decimals: number = await callPaymentTokenDecimals();
+        console.log("decimals", decimals);
+        let sitBalance = Number(await callBalanceOfSit(address[0])) / 10 ** Number(decimals);
+        console.log("sitBalance", sitBalance);
+        let usdcBalance =  Number(await callBalanceOfPaymentToken(address[0])) / 10 ** Number(decimals);
+        setUsdcBalance(usdcBalance);
+        let res = await callIsBeneficiary(address[0]);
+        console.log("CallIsBeneficiary", res);
 
+        let purchease = await callPurchasedTokens(address[0]);
+        console.log("purchease", Number(purchease));
+        dispatch(
+          setSitData({
+            ...data,
+            isBeneficiary: res,
+            purchasedTokens: Number(purchease) ,
+            totalBalance: sitBalance,
+          })
+        );
+        const priceWD = await callGetPrice();
+        console.log("priceWD", Number(priceWD));
+
+        const price = (Number(priceWD) / 10 ** Number(decimals));
+        console.log("price", price);
+        dispatch(setSitPrice(price));
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
   useEffect(() => {
-    setLoading(Loading);
-  }, [Loading]);
+    initialize();
+  }, [change,address]);
   return (
     <>
       {loading && <Loader />}
@@ -38,7 +90,9 @@ export default function Header() {
               <Link
                 href="/public-sale"
                 className={`flex items-center font-fontspringBold font-bold gap-3 pb-1 textStyle ${
-                  pathname === "/public-sale" ? "   font-medium border-b-2 border-sittaris-300" : " "
+                  pathname === "/public-sale"
+                    ? "   font-medium border-b-2 border-sittaris-300"
+                    : " "
                 } `}
               >
                 <span>Public Sale</span>
@@ -51,7 +105,7 @@ export default function Header() {
                 height={16}
                 alt=""
               />
-              123.000
+              {usdcBalance.toFixed(2)}
             </div>
             <div className=" flex items-center gap-2">
               <Image
@@ -60,7 +114,16 @@ export default function Header() {
                 height={16}
                 alt=""
               />
-              123.000
+              {data.totalBalance.toFixed(2)}
+            </div>
+            <div className=" flex items-center gap-2">
+              <Image
+                src={"/assets/tokens/sittaris-locked.svg"}
+                width={16}
+                height={16}
+                alt=""
+              />
+              {data.purchasedTokens.toFixed(2)}
             </div>
           </div>
         </div>

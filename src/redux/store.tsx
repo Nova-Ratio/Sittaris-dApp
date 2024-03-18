@@ -1,11 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import CurriculumReducer from '@/redux/create/curriculum';
+
 import AuthReducer from './auth/auth';
 
 export const store = configureStore({
 	reducer: {
 		Auth: AuthReducer,
-		Curriculum: CurriculumReducer,
 	},
 });
 

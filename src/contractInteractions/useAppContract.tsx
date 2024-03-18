@@ -43,6 +43,36 @@ export const callApprove = async (address: string, amount: number) => {
   }
 };
 
+export const callBalanceOfSit = async (address: string) => {
+  try {
+    const { contractWithSigner, msgSender } = await callTokenContract();
+    const balance = await contractWithSigner.balanceOf(address);
+    return balance;
+  } catch (error) {
+    console.error("Error during balanceOf:", error);
+    //alert("There was an error during the balanceOf process. Please try again.");
+    ToastError.fire({
+      title: "There was an error during the balanceOf process. Please try again.",
+    });
+    return false;
+  }
+}
+
+ export const callBalanceOfPaymentToken = async (address: string) => {
+  try {
+    const { contractWithSigner, msgSender } = await callPaymentTokenContract();
+    const balance = await contractWithSigner.balanceOf(address);
+    return balance;
+  } catch (error) {
+    console.error("Error during balanceOf:", error);
+    //alert("There was an error during the balanceOf process. Please try again.");
+    ToastError.fire({
+      title: "There was an error during the balanceOf process. Please try again.",
+    });
+    return false;
+  }
+}
+
 //Payment Token Contract's functions
 export const callPaymentTokenAllowance = async (address: string) => {
   try {
@@ -100,7 +130,7 @@ export const callBuyTokens = async (amount: number) => {
   try {
     const priceWD = await callGetPrice();
     console.log("priceWD", Number(priceWD));
-    
+
     const decimals: number = await callPaymentTokenDecimals();
     console.log("decimals", decimals);
 
@@ -113,7 +143,12 @@ export const callBuyTokens = async (amount: number) => {
     const { contractWithSigner, msgSender, publicSaleAddress } =
       await callSaleContract();
     const checker = await callPaymentTokenAllowance(publicSaleAddress);
-    if (checker < amountToPay) {
+    console.log(
+      "checker",
+      Number(checker).toLocaleString("fullwide", { useGrouping: false })
+    );
+
+    if (Number(checker) < amountToPay) {
       await callPaymentTokenApprove(
         publicSaleAddress,
         await parseTo18Decimals(amountToPay)
@@ -127,6 +162,7 @@ export const callBuyTokens = async (amount: number) => {
     }).fire({
       title: "Transaction completed successfully.",
     });
+    return true;
   } catch (error) {
     console.error("Error during buyTokens:", error);
     //alert("There was an error during the buyTokens process. Please try again.");
@@ -174,7 +210,7 @@ export const callGetVestingInfo = async (address: string) => {
   try {
     const { contractWithSigner, msgSender } = await callSaleContract();
     const vestingInfo = await contractWithSigner.vestingInfo(address);
-    return vestingInfo;
+    return await vestingInfo;
   } catch (error) {
     console.error("Error during getVestingInfo:", error);
     //alert("There was an error during the getVestingInfo process. Please try again.");
@@ -284,32 +320,34 @@ export const callTotalSaledTokens = async () => {
 };
 
 export const callPurchasedTokens = async (address: string) => {
-    try {
-        const { contractWithSigner, msgSender } = await callSaleContract();
-        const purchasedTokens = await contractWithSigner.purchasedTokes(address);
-        return purchasedTokens;
-    } catch (error) {
-        console.error("Error during purchasedTokens:", error);
-        //alert("There was an error during the purchasedTokens process. Please try again.");
-        ToastError.fire({
-            title:
-                "There was an error during the purchasedTokens process. Please try again.",
-        });
-        return false;
-    }
+  try {
+    const { contractWithSigner, msgSender } = await callSaleContract();
+    const purchasedTokens = await contractWithSigner.purchasedTokes(address);
+    return purchasedTokens;
+  } catch (error) {
+    console.error("Error during purchasedTokens:", error);
+    //alert("There was an error during the purchasedTokens process. Please try again.");
+    ToastError.fire({
+      title:
+        "There was an error during the purchasedTokens process. Please try again.",
+    });
+    return false;
+  }
 };
 
 //Staking Contract's functions
 export const callStake = async (amount: number) => {
   try {
+    
     const { contractWithSigner, msgSender, stakingAddress } =
       await callStakingContract();
     let checker = await callAllowance(stakingAddress);
     if (checker < amount) {
       await callApprove(stakingAddress, amount);
     }
-    const tx = await contractWithSigner.stake(amount);
+    const tx = await contractWithSigner.stake(await parseTo18Decimals(amount));
     await tx.wait();
+    return true;
   } catch (error) {
     console.error("Error during stake:", error);
     //alert("There was an error during the stake process. Please try again.");
@@ -323,8 +361,9 @@ export const callStake = async (amount: number) => {
 export const callUnstake = async (amount: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
-    const tx = await contractWithSigner.unstake(amount);
+    const tx = await contractWithSigner.unstake(await parseTo18Decimals(amount));
     await tx.wait();
+    return true;
   } catch (error) {
     console.error("Error during unstake:", error);
     //alert("There was an error during the unstake process. Please try again.");

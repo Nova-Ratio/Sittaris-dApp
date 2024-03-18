@@ -13,6 +13,12 @@ export interface AuthState {
   status: "idle" | "loading" | "failed";
   locale: string;
   darkMode: boolean;
+  sitData: {
+    isBeneficiary: boolean;
+    purchasedTokens: number;
+    totalBalance: number;
+    price: number;
+  };
 }
 
 const initialState: AuthState = {
@@ -27,6 +33,12 @@ const initialState: AuthState = {
   change: false,
   locale: "en",
   darkMode: false,
+  sitData: {
+    isBeneficiary: false,
+    purchasedTokens: 0,
+    totalBalance: 0,
+    price: 0,
+  }
 };
 
 export const AuthSlice = createSlice({
@@ -81,6 +93,12 @@ export const AuthSlice = createSlice({
     setChainId: (state, action: PayloadAction<string>) => {
       state.chainId = action.payload;
     },
+    setSitPrice: (state, action: PayloadAction<number>) => {
+      state.sitData.price = action.payload;
+    },
+    setSitData: (state, action: PayloadAction<AuthState["sitData"]>) => {
+      state.sitData = action.payload;
+    },
   },
 });
 
@@ -96,6 +114,8 @@ export const {
   toggleMenu,
   darkModeTogle,
   setChainId,
+  setSitPrice,
+  setSitData,
 } = AuthSlice.actions;
 
 export const selectData = (state: RootState) => ({
@@ -109,6 +129,8 @@ export const selectData = (state: RootState) => ({
   currentMenu: state.Auth.currentMenu,
   darkMode: state.Auth.darkMode,
   chainId: state.Auth.chainId,
+  sitData: state.Auth.sitData,
+  price: state.Auth.sitData.price,
 });
 
 export default AuthSlice.reducer;

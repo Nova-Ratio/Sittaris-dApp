@@ -7,8 +7,6 @@ import { useAppDispatch, useAppSelector } from "@/hook/redux/hooks";
 import { darkModeTogle, selectData, toggleMenu } from "@/redux/auth/auth";
 import { Zones } from "@/data/zones";
 import Modal from "./tailwind/Modal";
-import { ethers } from "ethers";
-import Ethers from "@/lib/ethers";
 import useMetamask from "@/hook/useMetamask";
 import useDisconnect from "@/hook/useDisconnect";
 export default function Sidebar() {

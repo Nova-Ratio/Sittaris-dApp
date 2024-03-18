@@ -36,7 +36,7 @@ export default function Modal({
           </Transition.Child>
           <div
             id="register_modal"
-            className="fixed  inset-0 z-[999] overflow-y-auto bg-[black]/60"
+            className="fixed  inset-0 z-[999] overflow-y-auto bg-[black]/50"
           >
             <div className="flex min-h-screen items-center justify-center px-4 py-8">
               <Transition.Child
@@ -48,7 +48,7 @@ export default function Modal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="panel  absolute z-10 flex w-fit max-w-[95vw]  bg-white/90 dark:bg-black/90 flex-col  overflow-hidden rounded-lg  p-0 text-black dark:text-white  2xl:max-w-[80vw] shadow-md shadow-white/20">
+                <Dialog.Panel className="panel  absolute z-10 flex w-fit max-w-[95vw]  bg-white/80 dark:bg-black/75 backdrop-blur-sm flex-col  overflow-hidden rounded-lg  p-0 text-black dark:text-white  2xl:max-w-[80vw] shadow-md shadow-white/20">
                   <div className=" h-fit  w-full flex flex-col py-10 overflow-y-auto relative">
                     <div className="flex absolute left-0 top-0 h-14 w-full items-end justify-between bg-purple px-6 text-sm font-semibold text-white md:text-xl">
                       <h2>{title}</h2>

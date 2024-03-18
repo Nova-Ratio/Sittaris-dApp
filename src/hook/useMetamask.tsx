@@ -74,6 +74,12 @@ export default function useMetamask({
       }
     }
   })
+  useEffect(() => {
+    const local = localStorage.getItem("address");
+    if (local) {
+      dispatch(setAddress(local));
+    }
+  }, []);
 
   const CheckChain = (id: string) => {
     const { provider, ethereum } = Ethers();
@@ -149,36 +155,7 @@ export default function useMetamask({
       const { provider, ethereum } = Ethers();
 
       await ethereum.send("eth_requestAccounts");
-
       let chainIdNow = await ethereum.request({ method: "eth_chainId" });
-
-      const signer = await provider?.getSigner();
-
-      let signature = await signer.signMessage("Connect To Sittaris dApp");
-
-      const [address /* , chainIdNow, networkName */] = await Promise.all([
-        signer.getAddress(),
-        signer.provider
-          .getNetwork()
-          .then((network: { chainId: any }) => network.chainId),
-        signer.provider
-          .getNetwork()
-          .then((network: { name: any }) => network.name),
-      ]);
-      //console.log("address", address);
-      localStorage.setItem("address", address);
-
-      //console.log("chainId", chainId);
-      if (signature){
-        Close();
-        dispatch(setAddress(address));
-        ToastSuccess({}).fire({
-          title: "Your wallet is connected successfully.",
-        });
-      }
-      //console.log("status", ethers.formatEther(chainId));
-      //dispatch(setChainId(chainId));
-      //console.log("chainIdNow", chainIdNow, chainId, chain[chainId].chainId);
 
       if (chainId.toString() !== chainIdNow) {
         try {
@@ -205,6 +182,38 @@ export default function useMetamask({
           });
         }
       }
+
+      
+
+      const signer = await provider?.getSigner();
+
+      let signature = await signer.signMessage("Connect To Sittaris dApp");
+
+      const [address /* , chainIdNow, networkName */] = await Promise.all([
+        signer.getAddress(),
+        signer.provider
+          .getNetwork()
+          .then((network: { chainId: any }) => network.chainId),
+        signer.provider
+          .getNetwork()
+          .then((network: { name: any }) => network.name),
+      ]);
+      //console.log("address", address);
+      localStorage.setItem("address", address);
+
+      //console.log("chainId", chainId);
+      if (signature){
+        Close();
+        dispatch(setAddress(address));
+        ToastSuccess({}).fire({
+          title: "Connected successfully.",
+        });
+      }
+      //console.log("status", ethers.formatEther(chainId));
+      //dispatch(setChainId(chainId));
+      //console.log("chainIdNow", chainIdNow, chainId, chain[chainId].chainId);
+
+      
       CheckChain(chainIdNow);
       //router.push("/my-account");
     } catch (error) {
