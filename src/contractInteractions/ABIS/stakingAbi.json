@@ -17,6 +17,11 @@
 	},
 	{
 		"inputs": [],
+		"name": "InvalidStakeIndex",
+		"type": "error"
+	},
+	{
+		"inputs": [],
 		"name": "InvalidUnstakeAmount",
 		"type": "error"
 	},
@@ -45,6 +50,16 @@
 			}
 		],
 		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "StakeAlreadyClaimed",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "StakingPeriodNotFinished",
 		"type": "error"
 	},
 	{
@@ -99,6 +114,12 @@
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum SITStaking.StakingPeriod",
+				"name": "period",
+				"type": "uint8"
 			}
 		],
 		"name": "Staked",
@@ -155,6 +176,11 @@
 				"internalType": "address",
 				"name": "_user",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_stakeIndex",
+				"type": "uint256"
 			}
 		],
 		"name": "calculateReward",
@@ -169,7 +195,13 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_stakeIndex",
+				"type": "uint256"
+			}
+		],
 		"name": "claimReward",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -266,6 +298,11 @@
 				"internalType": "uint256",
 				"name": "_amount",
 				"type": "uint256"
+			},
+			{
+				"internalType": "enum SITStaking.StakingPeriod",
+				"name": "_period",
+				"type": "uint8"
 			}
 		],
 		"name": "stake",
@@ -298,6 +335,11 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"name": "stakes",
@@ -315,6 +357,35 @@
 			{
 				"internalType": "uint256",
 				"name": "lastStakedTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "stakingPeriod",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "claimed",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "enum SITStaking.StakingPeriod",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"name": "stakingPeriods",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
 				"type": "uint256"
 			}
 		],
@@ -336,6 +407,11 @@
 	},
 	{
 		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_stakeIndex",
+				"type": "uint256"
+			},
 			{
 				"internalType": "uint256",
 				"name": "_amount",

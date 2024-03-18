@@ -15,6 +15,11 @@
 				"internalType": "uint256",
 				"name": "_price",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalSaleLimit_",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -75,6 +80,11 @@
 	{
 		"inputs": [],
 		"name": "SalePeriodNotstarted",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "TotalSaleLimitReached",
 		"type": "error"
 	},
 	{
@@ -316,7 +326,7 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "buyer",
+				"name": "",
 				"type": "address"
 			}
 		],
@@ -324,7 +334,7 @@
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "purchased",
+				"name": "",
 				"type": "uint256"
 			}
 		],
@@ -416,6 +426,19 @@
 		"name": "setVestingPeriod",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSaleLimit",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
