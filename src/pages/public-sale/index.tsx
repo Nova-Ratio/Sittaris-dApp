@@ -55,7 +55,7 @@ export default function Home() {
     try {
       const decimals: number = await callPaymentTokenDecimals();
       console.log("decimals", decimals);
-      const { contractWithSigner, msgSender, publicSaleAddress } =
+      const {  msgSender, publicSaleAddress } =
         await callSaleContract();
       const Total = await callPaymentTokenAllowance(publicSaleAddress);
       console.log(

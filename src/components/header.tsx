@@ -37,9 +37,11 @@ export default function Header() {
       if (address) {
         const decimals: number = await callPaymentTokenDecimals();
         console.log("decimals", decimals);
-        let sitBalance = Number(await callBalanceOfSit(address[0])) / 10 ** Number(decimals);
+        let sitBalance = Number(await callBalanceOfSit(address[0]));
         console.log("sitBalance", sitBalance);
-        let usdcBalance =  Number(await callBalanceOfPaymentToken(address[0])) / 10 ** Number(decimals);
+        let usdcBalance =  Number(await callBalanceOfPaymentToken(address[0])) ;
+        console.log("usdcBalance", usdcBalance);
+        
         setUsdcBalance(usdcBalance);
         let res = await callIsBeneficiary(address[0]);
         console.log("CallIsBeneficiary", res);

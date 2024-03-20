@@ -26,6 +26,7 @@ export function StakeModal({
 }) {
   const { sitData, loading, change } = useAppSelector(selectData);
   const [apy, setApy] = useState(0);
+  const [preiod, setPeriod] = useState(30);
   const dispatch = useAppDispatch();
   async function CallAPY() {
     try {
@@ -39,7 +40,7 @@ export function StakeModal({
   async function Stake() {
     try {
       dispatch(setLoading(true));
-      let res = await callStake(amount);
+      let res = await callStake(amount,preiod);
       console.log("res", res);
       if (res) {
         dispatch(setChange(!change));
