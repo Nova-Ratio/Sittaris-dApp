@@ -16,8 +16,6 @@ export default function ParametreVertical({
   const [parameterData, setParameterData] = useState({
     energy: "0",
     specific: "0",
-    income: "N/A",
-    meter: "N/A",
   });
   const [parameterPeriod, setParameterPeriod] = useState({
     label: "Yesterday",
@@ -128,11 +126,7 @@ export default function ParametreVertical({
       <AnimateHeight height={activeParametre ? "auto" : 0}>
         <div className="w-full grid gap-3 md:gap-6 py-3 ">
           {[
-            {
-              label: "Energy (Meter)",
-              value: parameterData.meter,
-              scale: "",
-            },
+            
             {
               label: "Energy Specific (Obsolete)",
               value: parameterData.specific,
@@ -143,7 +137,6 @@ export default function ParametreVertical({
               value: parameterData.energy,
               scale: "kWh",
             },
-            { label: "Income", value: parameterData.income, scale: "" },
           ].map((item, index) => (
             <div key={index} className="flex justify-between gap-2 ">
               <div className="flex gap-1">

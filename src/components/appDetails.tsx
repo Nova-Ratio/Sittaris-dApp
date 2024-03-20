@@ -15,7 +15,7 @@ export function AppDetails({
 }) {
   const [data, setData] = useState(
     getData || {
-      capacity: "115 kW",
+      capacity: "10.7 MWp",
       stake: "1.000 SIT",
     }
   );

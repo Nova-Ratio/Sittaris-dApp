@@ -16,8 +16,6 @@ export default function Parametre({
   const [parameterData, setParameterData] = useState({
     energy: "0",
     specific: "0",
-    income: "N/A",
-    meter: "N/A",
   });
   const [parameterPeriod, setParameterPeriod] = useState({
     label: "Yesterday",
@@ -127,11 +125,7 @@ export default function Parametre({
       <AnimateHeight height={activeParametre ? "auto" : 0}>
         <div className="w-full grid grid-cols-2 gap-3 py-3 text-black/60 dark:text-white/60">
           {[
-            {
-              label: "Energy (Meter)",
-              value: parameterData.meter,
-              scale: "",
-            },
+            
             {
               label: "Energy Specific (Obsolete)",
               value: parameterData.specific,
@@ -142,7 +136,7 @@ export default function Parametre({
               value: parameterData.energy,
               scale: "kWh",
             },
-            { label: "Income", value: parameterData.income, scale: "" },
+            
           ].map((item, index) => (
             <div key={index} className="flex flex-col gap-1">
               <div className="flex gap-1">
