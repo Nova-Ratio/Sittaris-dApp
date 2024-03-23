@@ -21,6 +21,7 @@ import {
   callTotalSaledTokens,
 } from "@/contractInteractions/useAppContract";
 import { callSaleContract } from "@/contractInteractions/ethereumContracts";
+import { CircleIcon } from "@/components/icons";
 
 export default function Home() {
   const [zone, setZone] = useState({
@@ -45,8 +46,7 @@ export default function Home() {
   } = useAppSelector(selectData);
   const dispatch = useAppDispatch();
   //console.log("paymentMethod", paymentMethod);
-  console.log("sitData", sitData);
-  console.log("price", sitPrice);
+
   const [timeData, setTimeData] = useState({
     start: "2022-03-01",
     end: "2022-03-31",
@@ -55,8 +55,7 @@ export default function Home() {
     try {
       const decimals: number = await callPaymentTokenDecimals();
       console.log("decimals", decimals);
-      const {  msgSender, publicSaleAddress } =
-        await callSaleContract();
+      const { msgSender, publicSaleAddress } = await callSaleContract();
       const Total = await callPaymentTokenAllowance(publicSaleAddress);
       console.log(
         "checker",
@@ -74,7 +73,7 @@ export default function Home() {
         total: 200000000000000000000,
       });
       if (msgSender) {
-        let vesting = await Promise.all( await callGetVestingInfo(msgSender));
+        let vesting = await Promise.all(await callGetVestingInfo(msgSender));
 
         console.log("vesting", vesting);
       }
@@ -115,12 +114,13 @@ export default function Home() {
         title="title of this newsletter section"
         description="Lorem ipsum dolor sit amet consectetur. Nibh rhoncus cras ultricies diam arcu venenatis gravida purus. Massa consectetur purus risus tincidunt volutpat in cursus. Quam mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
-      <div className=" px-3 flex flex-col gap-6">
+      <div className=" px-3 flex flex-col gap-10">
         <h3 className={`${"font-fontspringBold"} font-semibold`}>
           Buy SIT Token
         </h3>
-        <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
-          <div className="w-1/2  gap-6 flex flex-col ">
+        <div className="px-0 grid grid-cols-2 w-full gap-3 md:gap-6 xl:gap-10 ">
+          <div className="w-full  gap-6 flex flex-col relative">
+            <CircleIcon className="absolute hidden 2xl:block -bottom-10 -left-6 w-36 h-36" />
             <div className="card !h-fit !px-10 lg:gap-10 2xl:gap-10">
               <div className="flex flex-col w-full items-center gap-1">
                 <Image
@@ -187,8 +187,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-4">
-            <AppDetails addClass=" dark:text-white/70 text-black/70" />
+          <div className="w-full flex flex-col gap-4">
+            {/* <AppDetails addClass=" dark:text-white/70 text-black/70" /> */}
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"
               plantKey={zone.key}
@@ -202,7 +202,9 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="card items-center 2xl:gap-10 !py-10">
+        <div className="card items-center 2xl:gap-10 !py-10 relative">
+          <CircleIcon className="absolute hidden 2xl:block -top-10 -right-3 w-20 h-20" />
+          <CircleIcon className="absolute hidden 2xl:block -top-8 left-20 w-28 h-28" />
           <div className="flex gap-3 text-xl">
             <span>My Sittaris (SIT) Token Amount:</span>
             <b>

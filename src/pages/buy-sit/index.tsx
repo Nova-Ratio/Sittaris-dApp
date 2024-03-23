@@ -77,7 +77,7 @@ export default function Home() {
   async function buySit() {
     dispatch(setLoading(true));
     try {
-      let res = await callBuyTokens(amount);
+      let res = await callBuyTokens(amount/ sitPrice);
       if (res) {
         console.log("res", res);
         dispatch(setChange(!change));

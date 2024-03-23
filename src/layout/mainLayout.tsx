@@ -21,7 +21,7 @@ export default function MainLayout({
         <title>{titleRender}</title>
       </Head>
       <main
-        className={`flex min-h-[100dvh] h-full w-full flex-col items-center justify-end  relative   dark:text-white text-black pt-24 ${""} font-satoshi max-w-[100vw] 2xl:max-w-[1920px]  mx-auto`}
+        className={`flex min-h-[100dvh] h-full w-full flex-col items-center justify-end  relative   dark:text-white text-black pt-28 ${""} font-satoshi max-w-[100vw] 2xl:max-w-[1920px]  mx-auto`}
       >
         <Header />
         <div className="flex w-full min-h-[80vh] z-10 ">

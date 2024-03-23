@@ -13,7 +13,7 @@ export default function Sidebar() {
   const router = useRouter();
   const { currentMenu, darkMode, address, chainId } = useAppSelector(selectData);
   const dispatch = useAppDispatch();
-  console.log("address", address);
+  //console.log("address", address);
   const { disconnect } = useDisconnect();
   const [modal, setModal] = useState(false);
   const { connecWallet } = useMetamask({
@@ -98,7 +98,7 @@ export default function Sidebar() {
         <ul className="flex flex-col gap-8 text-base z-10 text-black/70 dark:text-white/70 h-[85vh] overflow-y-auto w-full pb-12 py-2">
           <li
             key={"connectwallet"}
-            className="w-full flex items-center gap-3 text-xs dark:text-white"
+            className="w-full flex items-center font-manrope gap-3 text-xs xl:text-sm dark:text-white"
           >
             {address ? (
               <>

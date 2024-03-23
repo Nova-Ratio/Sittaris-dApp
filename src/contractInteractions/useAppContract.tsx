@@ -144,6 +144,8 @@ export const callBalanceOfPaymentToken = async (address: string) => {
 //Public Sale Contract's functions
 export const callBuyTokens = async (amount: number) => {
     try {
+        console.log("amount", amount);
+        
         const price = await callGetPrice();
         console.log("price", Number(price));
 
@@ -152,7 +154,7 @@ export const callBuyTokens = async (amount: number) => {
 
         console.log("price", price);
 
-        const amountToPay = amount * price;
+        const amountToPay = amount * Number(price) ;
         console.log("amountToPay", amountToPay);
 
         const { contractWithSigner, msgSender, publicSaleAddress } =
@@ -163,14 +165,18 @@ export const callBuyTokens = async (amount: number) => {
             Number(checker).toLocaleString("fullwide", { useGrouping: false })
         );
 
-        if (Number(checker) < amountToPay) {
+        if (Number(checker)< amountToPay) {
+            console.log("amountToPay2", amountToPay.toString());
+            
             await callPaymentTokenApprove(
                 publicSaleAddress, amountToPay.toString()
             );
         }
         const decimalsToken = await callSitTokenDecimals();
+        console.log("decimalsToken", Number(decimalsToken));
+        
         const buyingAmount = amount * 10 ** Number(decimalsToken);
-        const tx = await contractWithSigner.buyTokens(buyingAmount);
+        const tx = await contractWithSigner.buyTokens(buyingAmount.toString());
         await tx.wait();
         let hash = tx.hash;
         ToastSuccess({
@@ -180,6 +186,8 @@ export const callBuyTokens = async (amount: number) => {
         });
         return true;
     } catch (error) {
+        console.log("error", error);
+        
         console.error("Error during buyTokens:", error);
         //alert("There was an error during the buyTokens process. Please try again.");
         ToastError.fire({

@@ -88,6 +88,10 @@ body .tox-statusbar__branding {
     border: 2px solid #03ae5a;
     @apply px-6 py-2 justify-center text-base font-medium;
   }
+  .alertCustom 
+  {
+    @apply !h-fit !p-2 !pl-3  flex items-center !text-black dark:!text-white !w-fit !border-2 !bg-white/20 backdrop-blur-sm  !border-solid;
+  }
   .bgGradient {
     background: radial-gradient(
         100% 100% at 38.06% 0%,

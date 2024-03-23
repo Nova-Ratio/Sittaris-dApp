@@ -1,3 +1,16 @@
+export const CircleIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" {...props} width="179" height="171" viewBox="0 0 179 171" fill="none">
+  <circle cx="83.6038" cy="86.6698" r="67.8493" transform="rotate(-15.6097 83.6038 86.6698)" fill="#B56B15"/>
+  <circle cx="94.5784" cy="83.6037" r="67.8493" transform="rotate(-15.6097 94.5784 83.6037)" fill="url(#paint0_linear_460_8902)"/>
+  <defs>
+    <linearGradient id="paint0_linear_460_8902" x1="26.7292" y1="63.9222" x2="162.428" y2="122.449" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6911D"/>
+      <stop offset="1" stop-color="#F6A84F"/>
+    </linearGradient>
+  </defs>
+</svg>
+);
+
 export const CoursesIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     width="24"
@@ -139,17 +152,7 @@ export const ArrowLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const CircleIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    width="8"
-    height="9"
-    viewBox="0 0 8 9"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <circle cx="4" cy="4.5" r="4" fill="currentColor" fillOpacity="0.6" />
-  </svg>
-);
+
 
 export const LogOutIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg

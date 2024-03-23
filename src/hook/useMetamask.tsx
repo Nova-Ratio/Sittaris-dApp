@@ -1,8 +1,5 @@
 import Ethers from "@/lib/ethers";
-import {
-  setAddress,
-  setClear,
-} from "@/redux/auth/auth";
+import { setAddress, setClear } from "@/redux/auth/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -29,7 +26,7 @@ export default function useMetamask({
     // ismobil not working
     if (
       //@ts-ignore
-      window.ethereum 
+      window.ethereum
     ) {
       const getChainId = async () => {
         const { ethereum } = Ethers();
@@ -38,9 +35,9 @@ export default function useMetamask({
         });
         //dispatch(setChainId(chainId));
         //console.log("chainIdMetamask", chainIdMetamask);
-        const chainId = "0x61"
+        const chainId = "0x61";
         //console.log("chainIdMetamask", chainIdMetamask, chainId, chainIdMetamask.toString() !== chainId);
-        
+
         if (chainIdMetamask.toString() !== chainId) {
           CheckChain(chainIdMetamask);
         }
@@ -58,12 +55,12 @@ export default function useMetamask({
         window.ethereum?.on("chainChanged", (chainId) => {
           CheckChain(chainId);
           //console.log("chainId123123123", chainId);
-          
-          localStorage.removeItem("address");
+
+          //localStorage.removeItem("address");
           if (!address) {
             //dispatch(setChainId(chainId));
           } else {
-            dispatch(setClear());
+            //dispatch(setClear());
             //localStorage.clear();
           }
           //router.push("/");
@@ -73,91 +70,33 @@ export default function useMetamask({
         console.error(err);
       }
     }
-  })
+  });
   useEffect(() => {
     const local = localStorage.getItem("address");
     if (local) {
       dispatch(setAddress(local));
     }
   }, []);
-
-  const CheckChain = (id: string) => {
-    const { provider, ethereum } = Ethers();
-    
-
-    const chainID = "0x61"
-    //console.log("chainID", chainID, id, chainId, address); 
-    
-    if (
-      (id.toString() !== chainID && address) 
-    ) {
-      //dispatch(setClear());
-      /* console.log("chainId", chainId);
-      console.log("chain", chain[chainId]); */
-      const { name } = chain[id] || { name: "UNKNOW" };
-      const fromNetwork = name || "Unknown Network";
-      const toNetwork = chain[chainID]?.name || "Binance Smart Chain 2";
-
-      const alert = async () =>
-        await Swal.fire({
-          title: "Please Change Network",
-          text: `From ${fromNetwork} to ${toNetwork}`,
-          icon: "warning",
-          iconColor: "#fff",
-          showCancelButton: false,
-          backdrop: true,
-          background: "#191919",
-          confirmButtonColor: "#282828",
-          color: "#fff",
-          confirmButtonText: "Yes, Change It!",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              await ethereum?.request({
-                method: "wallet_switchEthereumChain",
-                params: [{ chainId: chain[chainId].chainId }],
-              });
-            } catch (error) {
-              await ethereum.request({
-                method: "wallet_addEthereumChain",
-                params: [
-                  {
-                    chainId: chain[chainId].chainId,
-                    chainName: chain[chainId].name,
-                    nativeCurrency: {
-                      name: chain[chainId].nativeCurrency.name,
-                      symbol: chain[chainId].nativeCurrency.symbol,
-                      decimals: 18,
-                    },
-                    rpcUrls: chain[chainId].rpcUrls,
-                    blockExplorerUrls: chain[chainId].blockExplorerUrls,
-                  },
-                ],
-              });
-            }
-          }
-        });
-      alert();
-    }
-    //console.log("id", id, chainID);
-
-    if (id.toString() === chainID) {
-      ToastSuccess({}).fire({
-        title: "Network Changed",
-      });
-      //router.reload();
-    }
-  };
-  //console.log("chainId", chainId);
-
-  async function connecWallet() {
-    try {
-      const { provider, ethereum } = Ethers();
-
-      await ethereum.send("eth_requestAccounts");
-      let chainIdNow = await ethereum.request({ method: "eth_chainId" });
-
-      if (chainId.toString() !== chainIdNow) {
+  const alert = async (fromNetwork: string, toNetwork: string, ethereum: any) =>
+    await Swal.fire({
+      title: "Please Change Network",
+      text: `From ${fromNetwork} to ${toNetwork}`,
+      icon: "warning",
+      iconColor: "#F6911D",
+      showCancelButton: false,
+      backdrop: true,
+      customClass: {
+        htmlContainer: " deneme ",
+        container: " deneme ",
+        title: "deneme ",
+        popup:
+          "bgGradientLight dark:bgGradient text-black dark:text-white bg-black/20  backdrop-blur-sm border-2",
+        confirmButton: "bg-white ",
+      },
+      confirmButtonColor: "#282828",
+      confirmButtonText: "Yes, Change It!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         try {
           await ethereum?.request({
             method: "wallet_switchEthereumChain",
@@ -182,8 +121,66 @@ export default function useMetamask({
           });
         }
       }
+    });
+  const CheckChain = async (id: string) => {
+    const { provider, ethereum } = Ethers();
 
-      
+    const chainID = "0x61";
+    //console.log("chainID", chainID, id, chainId, address);
+
+    if (id.toString() !== chainID && address) {
+      //dispatch(setClear());
+      /* console.log("chainId", chainId);
+      console.log("chain", chain[chainId]); */
+      const { name } = chain[id] || { name: "UNKNOW" };
+      const fromNetwork = name || "Unknown Network";
+      const toNetwork = chain[chainID]?.name || "Binance Smart Chain 2";
+
+      await alert(fromNetwork, toNetwork, ethereum);
+    }
+    //console.log("id", id, chainID);
+
+    if (id.toString() === chainID) {
+      ToastSuccess({}).fire({
+        title: "Network Changed",
+      });
+      //router.reload();
+    }
+  };
+  //console.log("chainId", chainId);
+
+  async function connecWallet() {
+    try {
+      const { provider, ethereum } = Ethers();
+
+      await ethereum.send("eth_requestAccounts");
+      let chainIdNow = await ethereum.request({ method: "eth_chainId" });
+
+      /* if (chainId.toString() !== chainIdNow) {
+        try {
+          await ethereum?.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: chain[chainId].chainId }],
+          });
+        } catch (error) {
+          await ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: chain[chainId].chainId,
+                chainName: chain[chainId].name,
+                nativeCurrency: {
+                  name: chain[chainId].nativeCurrency.name,
+                  symbol: chain[chainId].nativeCurrency.symbol,
+                  decimals: 18,
+                },
+                rpcUrls: chain[chainId].rpcUrls,
+                blockExplorerUrls: chain[chainId].blockExplorerUrls,
+              },
+            ],
+          });
+        }
+      } */
 
       const signer = await provider?.getSigner();
 
@@ -202,7 +199,7 @@ export default function useMetamask({
       localStorage.setItem("address", address);
 
       //console.log("chainId", chainId);
-      if (signature){
+      if (signature) {
         Close();
         dispatch(setAddress(address));
         ToastSuccess({}).fire({
@@ -213,7 +210,6 @@ export default function useMetamask({
       //dispatch(setChainId(chainId));
       //console.log("chainIdNow", chainIdNow, chainId, chain[chainId].chainId);
 
-      
       CheckChain(chainIdNow);
       //router.push("/my-account");
     } catch (error) {
