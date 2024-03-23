@@ -26,7 +26,10 @@ export function StakeModal({
 }) {
   const { sitData, loading, change } = useAppSelector(selectData);
   const [apy, setApy] = useState(0);
-  const [preiod, setPeriod] = useState(30*24*60*60);
+  const [period, setPeriod] = useState({
+    value: 30,
+    timestamp: 0, // 30 days
+  });
   const dispatch = useAppDispatch();
   async function CallAPY() {
     try {
@@ -40,7 +43,7 @@ export function StakeModal({
   async function Stake() {
     try {
       dispatch(setLoading(true));
-      let res = await callStake(amount,preiod);
+      let res = await callStake(amount, period.timestamp);
       console.log("res", res);
       if (res) {
         dispatch(setChange(!change));
@@ -57,6 +60,7 @@ export function StakeModal({
       CallAPY();
     }
   }, []);
+
   return (
     <Modal title="Stake SIT TOKEN" modal={modal} setModal={setModal}>
       {loading && <Loader />}
@@ -80,13 +84,13 @@ export function StakeModal({
               </h5>
               <div className="flex gap-3 ">
                 <button
-                  onClick={() => setAmount(sitData.totalBalance / 2)}
+                  onClick={() => setAmount(Number(sitData.totalBalance) / 2)}
                   className="outlineBtn dark:border-white/60 border-black/60 !text-sm"
                 >
                   Half
                 </button>
                 <button
-                  onClick={() => setAmount(sitData.totalBalance)}
+                  onClick={() => setAmount(Number(sitData.totalBalance))}
                   className="outlineBtn dark:border-white/60 border-black/60 !text-sm"
                 >
                   Max
@@ -94,17 +98,33 @@ export function StakeModal({
               </div>
             </div>
           </div>
-          <div className="hidden  grid-cols-5 gap-3">
+          <div className="grid  grid-cols-5 gap-3">
             {[30, 60, 90].map((item, index) => (
               <button
                 key={index}
-                className="dark:text-white/50 text-black/50 border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2"
+                onClick={() => setPeriod({ value: item, timestamp: index })}
+                className={` ${
+                  period.value === item
+                    ? "dark:text-white text-black border dark:border-white border-black"
+                    : "dark:text-white/50 text-black/50 border dark:border-white/20 border-black/20"
+                } hover:text-black dark:hover:text-white dark:border-white/20 rounded-lg py-2`}
               >
                 {item} Days
               </button>
             ))}
             <div className="col-span-2 relative flex items-center">
-              <InputText type="text" placeholder="1" />
+              <InputText
+                type="text"
+                disabled
+                value={period.value}
+                onChange={(e: any) =>
+                  setPeriod({
+                    value: Number(e.target.value),
+                    timestamp: Number(e.target.value) * 24 * 60 * 60,
+                  })
+                }
+                placeholder="1"
+              />
               <span className="absolute right-3 text-black/60 dark:text-white/60 ">
                 Days
               </span>
@@ -118,7 +138,7 @@ export function StakeModal({
                   type="text"
                   placeholder="1"
                   disabled
-                  value={(amount * (1 + (apy / 100))).toFixed(2)}
+                  value={(amount * (1 + apy / 100)).toFixed(2)}
                 />
                 <span className="absolute right-3 text-black/60 dark:text-white/60 ">
                   Days
@@ -131,7 +151,7 @@ export function StakeModal({
             <button
               onClick={Stake}
               disabled={
-                amount > sitData.totalBalance  || amount === 0  || loading
+                amount > Number(sitData.totalBalance) || amount === 0 || loading
               }
               className="inlineBtn w-1/2 2xl:text-xl disabled:cursor-not-allowed"
             >
@@ -176,10 +196,11 @@ export function UnstakeModal({
     try {
       dispatch(setLoading(true));
       const { msgSender } = await callSaleContract();
-      let res = await Promise.all(await callStakeInfo(msgSender));
+      let res = await callStakeInfo(msgSender);
       console.log("callStakeInfo", res);
       if (res) {
         //kalan gün hesaplanacak
+        res = await Promise.all(res);
         let days = Math.floor(
           (Date.now() - Number(res[2]) * 1000 + 30 * 24 * 60 * 60 * 1000) /
             (1000 * 60 * 60 * 24)

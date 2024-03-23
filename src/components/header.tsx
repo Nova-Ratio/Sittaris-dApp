@@ -53,7 +53,7 @@ export default function Header() {
             ...data,
             isBeneficiary: res,
             purchasedTokens: Number(purchease) ,
-            totalBalance: sitBalance,
+            totalBalance: sitBalance.toFixed(2) || 0,
           })
         );
         const priceWD = await callGetPrice();
@@ -116,7 +116,7 @@ export default function Header() {
                 height={16}
                 alt=""
               />
-              {data.totalBalance.toFixed(2)}
+              {data.totalBalance}
             </div>
             <div className=" flex items-center gap-2">
               <Image

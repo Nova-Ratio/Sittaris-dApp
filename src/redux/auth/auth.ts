@@ -16,7 +16,7 @@ export interface AuthState {
   sitData: {
     isBeneficiary: boolean;
     purchasedTokens: number;
-    totalBalance: number;
+    totalBalance: number | string;
     price: number;
   };
 }
