@@ -292,8 +292,8 @@ export function UnstakeModal({
           <div className="flex w-full justify-end ">
             <button
               onClick={Unstake}
-              disabled={amount > stakeData.amount || amount === 0 || loading}
-              className="inlineBtn w-1/2 2xl:text-xl"
+              disabled={/* amount > stakeData.amount || amount === 0 || */ loading}
+              className="inlineBtn w-1/2 2xl:text-xl disabled:cursor-not-allowed"
             >
               Unstake
             </button>

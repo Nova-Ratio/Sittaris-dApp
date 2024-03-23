@@ -420,12 +420,12 @@ export const callUnstake = async (amount: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
     const decimals = await callSitTokenDecimals();
-    const amountToUnstake = amount * 10 ** Number(decimals);
+    const amountToUnstake = parseToDecimals(amount,Number(decimals));
     const tx = await contractWithSigner.unstake(amountToUnstake);
     await tx.wait();
     return true;
   } catch (error) {
-    console.error("Error during unstake:", error);
+    console.log("Error during unstake:", error);
     //alert("There was an error during the unstake process. Please try again.");
     ToastError.fire({
       title: "There was an error during the unstake process. Please try again.",
