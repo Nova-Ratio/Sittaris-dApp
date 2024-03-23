@@ -18,6 +18,7 @@ import {
   callPaymentTokenDecimals,
   callSaleEndTimestamp,
   callSaleStartTimestamp,
+  callTotalSaleLimit,
   callTotalSaledTokens,
 } from "@/contractInteractions/useAppContract";
 import { callSaleContract } from "@/contractInteractions/ethereumContracts";
@@ -64,13 +65,14 @@ export default function Home() {
         })
       );
       let totalSaled = await callTotalSaledTokens();
+      let limit = await callTotalSaleLimit();
       console.log(
         "total",
         Number(totalSaled).toLocaleString("fullwide", { useGrouping: false })
       );
       setTokenAmount({
         sold: Number(totalSaled),
-        total: 200000000000000000000,
+        total: Number(limit),
       });
       if (msgSender) {
         let vesting = await Promise.all(await callGetVestingInfo(msgSender));
@@ -148,7 +150,10 @@ export default function Home() {
                     })}
                   </b>
                 </div>
-                <div className="w-full bg-black/10 rounded-lg h-8">
+                <div className="w-full bg-black/10 rounded-lg h-8 relative">
+                  <div className=" absolute left-0 top-0  h-full w-full flex justify-center items-center">
+                      {((tokenAmount.sold / tokenAmount.total) * 100).toFixed(2)} %
+                  </div>
                   <div
                     className="bg-[#03AE5A] rounded-lg h-8"
                     style={{

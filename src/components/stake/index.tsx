@@ -26,7 +26,7 @@ export function StakeModal({
 }) {
   const { sitData, loading, change } = useAppSelector(selectData);
   const [apy, setApy] = useState(0);
-  const [preiod, setPeriod] = useState(30);
+  const [preiod, setPeriod] = useState(30*24*60*60);
   const dispatch = useAppDispatch();
   async function CallAPY() {
     try {
@@ -131,7 +131,7 @@ export function StakeModal({
             <button
               onClick={Stake}
               disabled={
-                amount > sitData.totalBalance || amount === 0 || loading
+                amount > sitData.totalBalance  || amount === 0  || loading
               }
               className="inlineBtn w-1/2 2xl:text-xl disabled:cursor-not-allowed"
             >
