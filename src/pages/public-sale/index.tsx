@@ -30,8 +30,8 @@ export default function Home() {
     key: "plants/P25829",
   });
   const [tokenAmount, setTokenAmount] = useState({
-    sold: 500000,
-    total: 2000000,
+    sold: 0,
+    total: 0,
   });
   const [myTokenAmount, setMyTokenAmount] = useState({
     claimed: 200,
