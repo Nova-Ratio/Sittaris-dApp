@@ -420,7 +420,7 @@ export const callUnstake = async (amount: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
     const decimals = await callSitTokenDecimals();
-    const amountToUnstake = parseToDecimals(amount,Number(decimals));
+    const amountToUnstake = parseToDecimals(amount,decimals);
     const tx = await contractWithSigner.unstake(amountToUnstake);
     await tx.wait();
     return true;
