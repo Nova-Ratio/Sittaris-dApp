@@ -117,9 +117,9 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "enum SITStaking.StakingPeriod",
+				"internalType": "uint256",
 				"name": "period",
-				"type": "uint8"
+				"type": "uint256"
 			}
 		],
 		"name": "Staked",
@@ -247,6 +247,52 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_staker",
+				"type": "address"
+			}
+		],
+		"name": "getStakesInfo",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardDebt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lastStakedTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "stakingPeriod",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "claimed",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct SITStaking.StakeInfo[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "owner",
 		"outputs": [
@@ -300,14 +346,33 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "enum SITStaking.StakingPeriod",
+				"internalType": "uint256",
 				"name": "_period",
-				"type": "uint8"
+				"type": "uint256"
 			}
 		],
 		"name": "stake",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "stakeCount",
+		"outputs": [
+			{
+				"internalType": "uint128",
+				"name": "",
+				"type": "uint128"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -368,25 +433,6 @@
 				"internalType": "bool",
 				"name": "claimed",
 				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum SITStaking.StakingPeriod",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"name": "stakingPeriods",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",

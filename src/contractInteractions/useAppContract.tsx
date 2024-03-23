@@ -416,16 +416,16 @@ export const callStake = async (amount: any, period: number) => {
   }
 };
 
-export const callUnstake = async (amount: number) => {
+export const callUnstake = async (index : number, amount: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
     const decimals = await callSitTokenDecimals();
-    const amountToUnstake = parseToDecimals(amount,decimals);
-    const tx = await contractWithSigner.unstake(amountToUnstake);
+    const amountToUnstake = amount * 10 ** Number(decimals);
+    const tx = await contractWithSigner.unstake(index, amountToUnstake);
     await tx.wait();
     return true;
   } catch (error) {
-    console.log("Error during unstake:", error);
+    console.error("Error during unstake:", error);
     //alert("There was an error during the unstake process. Please try again.");
     ToastError.fire({
       title: "There was an error during the unstake process. Please try again.",
@@ -454,7 +454,7 @@ export const callStakeInfo = async (address: string) => {
     //console.log("address", address);
     
     const { contractWithSigner, msgSender } = await callStakingContract();
-    const stakeInfo = await contractWithSigner.stakes(address);
+    const stakeInfo = await contractWithSigner.getStakesInfo(address);
     return stakeInfo;
   } catch (error) {
     console.log("Error during stakeInfo:", error);
