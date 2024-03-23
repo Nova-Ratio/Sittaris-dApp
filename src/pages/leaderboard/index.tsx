@@ -185,7 +185,7 @@ export default function Home() {
           </div>
 
           <div className="w-1/2 flex flex-col gap-4">
-            <AppDetails addClass=" dark:text-white/70 text-black/70" />
+           {/*  <AppDetails addClass=" dark:text-white/70 text-black/70" /> */}
             <ParametreVertical addClass=" dark:text-white/70 text-black/70" plantKey={zone.key} />
             <ZoneApexChart
               key={zone.key}

@@ -4,12 +4,8 @@ import TitleComp from "@/components/title";
 import ApexChart from "@/components/charts/mixed";
 import Parametre from "@/components/parameter";
 import ParametreVertical from "@/components/parameterVertical";
-import { AppDetails } from "@/components/appDetails";
-import { Token } from "@/components/token";
 import { useState } from "react";
 import { Zones } from "@/data/zones";
-import Modal from "@/components/tailwind/Modal";
-import InputText from "@/components/tailwind/input";
 import { BottomGrid, StakeModal, UnstakeModal } from "@/components/stake";
 
 export default function Home() {

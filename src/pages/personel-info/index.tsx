@@ -23,7 +23,7 @@ export default function Home() {
         mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
       <div className=" px-3 flex flex-col gap-6  h-full w-full">
-        <AppDetails vertical={true} />
+       {/*  <AppDetails vertical={true} /> */}
         <div className="flex justify-between items-center gap-6">
           <h3 className={`${"font-fontspringBold"} font-semibold`}>
             Personel Information

@@ -5,8 +5,6 @@ import TitleComp from "@/components/title";
 import ApexChart from "@/components/charts/mixed";
 import Parametre from "@/components/parameter";
 import ParametreVertical from "@/components/parameterVertical";
-import { AppDetails } from "@/components/appDetails";
-import { Token } from "@/components/token";
 import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
 import { Zones } from "@/data/zones";
