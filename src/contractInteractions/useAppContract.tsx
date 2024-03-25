@@ -469,10 +469,10 @@ export const callStakeInfo = async (address: string) => {
   }
 };
 
-export const callCalculateReward = async (address: string) => {
+export const callCalculateReward = async (address: string, index: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
-    let rewards = await contractWithSigner.calculateReward(address);
+    let rewards = await contractWithSigner.calculateReward(address, index);
     const decimals = await callSitTokenDecimals();
     rewards = Number(rewards) / 10 ** Number(decimals);
     return rewards;
