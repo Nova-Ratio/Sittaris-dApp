@@ -105,7 +105,7 @@ export default function Header({
           <div className="flex items-center justify-between md:justify-start gap-6 dark:text-white w-full md:w-auto">
             <button
               onClick={() => setShow(!show)}
-              className="text-black dark:text-white/60 py-1 hover:text-black dark:hover:text-white transition-colors"
+              className=" md:hidden text-black dark:text-white/60 py-1 hover:text-black dark:hover:text-white transition-colors"
             >
               <HambugerIcon className="w-4 h-fit " />
             </button>

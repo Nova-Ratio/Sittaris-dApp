@@ -108,6 +108,10 @@ body .tox-statusbar__branding {
       ),
       #fff;
   }
+  .bgClear {
+    background: transparent;
+    background-image: none;
+  }
   .text-editor ul {
     @apply list-disc list-inside ml-3;
   }

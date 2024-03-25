@@ -97,7 +97,7 @@ export default function Sidebar({ show }: { show: boolean }) {
         show
           ? " absolute left-0 top-14 md:top-0 z-50 w-full  "
           : " hidden md:flex"
-      } font-fontspring w-full bg-black/40 bgGradientLight  dark:bgGradient md:bg-transparent md:dark:bg-transparent  md:w-72 flex pt-12 border-r border-sittaris-300/10 px-3 md:px-4`}
+      } font-fontspring w-full bg-black/40 bgGradientLight  dark:bgGradient md:!bgClear  md:w-72 flex pt-12 border-r border-sittaris-300/10 px-3 md:px-4`}
     >
       {
         <ul className="flex flex-col items-center md:items-start gap-8  z-10 text-black/70 dark:text-white/70 h-[85vh] overflow-y-auto w-full pb-12 py-2">
@@ -126,7 +126,18 @@ export default function Sidebar({ show }: { show: boolean }) {
               </button>
             )}
           </li>
-
+          <li className="md:hidden">
+            <Link
+              href="/public-sale"
+              className={`flex items-center text-[10px] md:text-sm 2xl:text-base font-fontspringBold font-bold gap-3 pb-1 textStyle ${
+                pathname === "/public-sale"
+                  ? "   font-medium border-b-2 border-sittaris-300"
+                  : " "
+              } `}
+            >
+              <span>Public Sale</span>
+            </Link>
+          </li>
           {sidebar.map((item) => (
             <li key={item.id}>
               <div className="flex gap-0 items-center">
