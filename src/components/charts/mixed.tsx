@@ -189,9 +189,9 @@ const ApexChart = ({
   //console.log("data", data);
 
   return (
-    <div className="w-full apexChart flex flex-col text-black dark:text-white py-6 ">
-      <div className="w-full flex items-end text-base gap-3 text-black/80 dark:text-white/80">
-        <div className="w-1/3 max-w-md">
+    <div className="w-full apexChart flex flex-col text-black dark:text-white py-4 md:py-6 ">
+      <div className="w-full flex flex-col md:flex-row items-end  gap-1  md:gap-3 text-black/80 dark:text-white/80">
+        <div className="w-full md:w-1/3 max-w-md">
           <ZoneDropDown
             placement="bottom-end"
             setZone={setZone}
@@ -199,17 +199,19 @@ const ApexChart = ({
             data={data}
           />
         </div>
-        <div className="flex items-center gap-2 ">
-          Period: <PeriodDropDown period={period} setPeriod={setPeriod} />{" "}
-        </div>
-        <div className="flex items-center gap-2 ">
-          Granularity:
-          <GranularitiesDropDown
-            period={period}
-            setPeriod={setPeriod}
-            granularities={granularities}
-            setGranularities={setGranularities}
-          />
+        <div className=" flex  gap-3">
+          <div className="flex items-center gap-2 ">
+            Period: <PeriodDropDown period={period} setPeriod={setPeriod} />{" "}
+          </div>
+          <div className="flex items-center gap-2 ">
+            Granularity:
+            <GranularitiesDropDown
+              period={period}
+              setPeriod={setPeriod}
+              granularities={granularities}
+              setGranularities={setGranularities}
+            />
+          </div>
         </div>
       </div>
       <Chart

@@ -9,9 +9,10 @@ import { Zones } from "@/data/zones";
 import Modal from "./tailwind/Modal";
 import useMetamask from "@/hook/useMetamask";
 import useDisconnect from "@/hook/useDisconnect";
-export default function Sidebar() {
+export default function Sidebar({ show }: { show: boolean }) {
   const router = useRouter();
-  const { currentMenu, darkMode, address, chainId } = useAppSelector(selectData);
+  const { currentMenu, darkMode, address, chainId } =
+    useAppSelector(selectData);
   const dispatch = useAppDispatch();
   //console.log("address", address);
   const { disconnect } = useDisconnect();
@@ -92,13 +93,17 @@ export default function Sidebar() {
   };
   return (
     <nav
-      className={` font-fontspring w-72 flex pt-12 border-r border-sittaris-300/10 px-3 md:px-4`}
+      className={` ${
+        show
+          ? " absolute left-0 top-14 md:top-0 z-50 w-full  "
+          : " hidden md:flex"
+      } font-fontspring w-full bg-black/40 bgGradientLight  dark:bgGradient md:bg-transparent md:dark:bg-transparent  md:w-72 flex pt-12 border-r border-sittaris-300/10 px-3 md:px-4`}
     >
       {
-        <ul className="flex flex-col gap-8 text-base z-10 text-black/70 dark:text-white/70 h-[85vh] overflow-y-auto w-full pb-12 py-2">
+        <ul className="flex flex-col items-center md:items-start gap-8  z-10 text-black/70 dark:text-white/70 h-[85vh] overflow-y-auto w-full pb-12 py-2">
           <li
             key={"connectwallet"}
-            className="w-full flex items-center font-manrope gap-3 text-xs xl:text-sm dark:text-white"
+            className=" flex items-center font-manrope gap-3 text-xs xl:text-sm dark:text-white"
           >
             {address ? (
               <>
@@ -156,7 +161,7 @@ export default function Sidebar() {
               </div>
               {item?.children && (
                 <AnimateHeight height={currentMenu === item.title ? "auto" : 0}>
-                  <ul className="flex list-disc flex-col w-full gap-2 pt-3 font-satoshi text-xs md:text-base ">
+                  <ul className="flex md:list-disc flex-col w-full gap-2 pt-3 font-satoshi text-xs md:text-base ">
                     {item?.children &&
                       item?.children?.length > 0 &&
                       item?.children.map((child: any) => {
@@ -188,6 +193,9 @@ export default function Sidebar() {
                 checked={darkMode}
                 onChange={(e) => darkModeToggle(e.target.checked)}
               />
+              {
+                //Todo: darkmode responsive en son yapılacak
+              }
               <label htmlFor="darkmode-toggle">
                 <MoonIcon />
                 <SunIcon />

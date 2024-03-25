@@ -143,11 +143,11 @@ export function ZoneDropDown({
     <Dropdown
       offset={[0, 4]}
       placement={`${placement}`}
-      btnClassName="block p-2  dark:text-white w-full "
+      btnClassName="block 2xl:p-2  dark:text-white w-full "
       button={
-        <div className="flex text-white items-center justify-between hover:text-[#03AE5A] gap-2 zeroBtn py-4 px-6 w-full">
+        <div className="flex text-white items-center justify-between hover:text-[#03AE5A] gap-2 zeroBtn py-3 md:py-4 px-4 md:px-6 w-full">
           {zone?.name}
-          <DownIcon className="w-4 h-fit" />
+          <DownIcon className="w-2.5 md:w-4 h-fit" />
         </div>
       }
     >

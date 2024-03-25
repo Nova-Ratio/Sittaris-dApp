@@ -25,11 +25,11 @@ export default function Home() {
         <h3 className={`${'font-fontspringBold'} font-semibold`}>
           Dashboard
         </h3>
-        <div className="px-6 border-[3px] border-black/20 dark:border-white/20 rounded-[18px]">
+        <div className="px-3 md:px-6 border-[3px] border-black/20 dark:border-white/20 rounded-[18px]">
           <ApexChart setZoneId={setZoneId} seriesNames={true} />
         </div>
-        <div className="grid  gap-6 text-base font-medium ">
-          <div className="flex w-full border-r pr-6 border-white/60">
+        <div className="grid md:grid-cols-2 gap-6  font-normal md:font-medium ">
+          <div className="flex w-full md:border-r pr-6 border-white/60">
             <AppDetails />
           </div>
           <ParametreVertical plantKey={Zones[zoneId-1].ref} />

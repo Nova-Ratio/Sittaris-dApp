@@ -4,6 +4,7 @@ import Sidebar from "@/components/sidebar";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function MainLayout({
   children,
@@ -15,37 +16,38 @@ export default function MainLayout({
   bgStatus?: boolean;
 }) {
   const titleRender = `${title} | Sittaris dApp`;
+  const [show, setShow] = useState(false);
   return (
     <>
       <Head>
         <title>{titleRender}</title>
       </Head>
       <main
-        className={`flex min-h-[100dvh] h-full w-full flex-col items-center justify-end  relative   dark:text-white text-black pt-28 ${""} font-satoshi max-w-[100vw] 2xl:max-w-[1920px]  mx-auto`}
+        className={`flex min-h-[100dvh] h-full w-full flex-col items-center justify-end  relative   dark:text-white text-black pt-10 md:pt-28 ${""} font-satoshi max-w-[100vw] 2xl:max-w-[1920px]  mx-auto text-xs md:text-sm 2xl:text-base`}
       >
-        <Header />
+        <Header setShow={setShow} show={show} />
         <div className="flex w-full min-h-[80vh] z-10 ">
-          <Sidebar />
+          <Sidebar show={show} />
           <div className="px-3 py-3 md:py-4 md:px-6 w-full flex flex-col gap-6">
             {children}
           </div>
         </div>
-        <footer className="w-full  flex flex-col items-start gap-6 justify-center z-20 pb-6 px-6">
-          <Link href="/" className="shrink-0 flex flex-col items-center">
+        <footer className="w-full  flex flex-col items-start gap-3 md:gap-6 justify-center z-20 pb-6 px-6">
+          <Link href="/" className="shrink-0 gap-3 md:gap-4 flex md:flex-col items-center">
             <Image
               src="/logo.svg"
               alt="Logo"
               width={42}
               height={60}
-              className="mr-4 h-24 w-fit dark:text-white text-black"
+              className=" h-12 md:h-24 w-fit dark:text-white text-black"
             />
-            <LogoTextIcon className="h-4 w-fit" />
+            <LogoTextIcon className="h-1.5 md:h-4 w-fit" />
           </Link>
-          <div className="grid grid-cols-3 w-full px-6">
+          <div className="grid grid-cols-3 w-full px-3 md:px-6">
             {footerData.map((item) => (
-              <div key={item.id} className="flex flex-col gap-4">
+              <div key={item.id} className="flex flex-col gap-2 md:gap-4">
                 <h3>{item.title}</h3>
-                <div className="flex gap-2 flex-col ">
+                <div className="flex gap-1 md:gap-2 flex-col text-[10px] md:text-xs xl:text-sm ">
                   {item.children.map((child) => (
                     <a
                       key={child.id}
