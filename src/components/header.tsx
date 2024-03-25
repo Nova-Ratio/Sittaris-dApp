@@ -87,7 +87,7 @@ export default function Header({
   return (
     <>
       {loading && <Loader />}
-      <header className=" fixed  bg-black/20 backdrop-blur-sm md:bg-transparent md:dark:bg-transparent left-0 top-0 w-[100vw] px-3 md:px-6 py-1 md:py-2  z-40">
+      <header className=" fixed  bg-black/20 backdrop-blur-sm md:bg-transparent md:dark:bg-transparent left-0 top-0 w-[100vw] px-3 md:px-6 py-1 md:py-0  z-40">
         <div className="flex items-center justify-center md:justify-between w-full h-9 md:h-fit">
           <Link
             href="/"
