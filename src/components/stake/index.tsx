@@ -212,7 +212,7 @@ export function UnstakeModal({
       setModal={setUnstakeModal}
     >
       {loading && <Loader />}
-      <div className="w-[50vw] min-h-52 flex flex-col items-center pt-8 px-6">
+      <div className="w-[55vw] min-h-52 flex flex-col items-center pt-8 px-6">
         <div className="w-full h-fit flex flex-col gap-6">
           {stakeData.length === 0 && <h4>No Data</h4>}
           {stakeData.length > 0 && (
@@ -228,7 +228,7 @@ export function UnstakeModal({
                     unstakeIndex === index
                       ? "dark:text-white text-black border dark:border-white border-black"
                       : "dark:text-white/50 text-black/50 border dark:border-white/20 border-black/20  "
-                  } hover:text-black dark:hover:text-white dark:border-white/20 rounded-lg card 2xl:p-6`}
+                  } hover:text-black dark:hover:text-white  rounded-lg card 2xl:p-6`}
                 >
                   <div className="flex gap-4 items-center justify-between text-xl">
                     <Token amount={"SIT"} />
