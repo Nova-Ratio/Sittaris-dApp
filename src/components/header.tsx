@@ -112,7 +112,7 @@ export default function Header({
             <div className="hidden md:flex gap-0 items-center">
               <Link
                 href="/public-sale"
-                className={`flex items-center text-[10px] md:text-sm 2xl:text-base font-fontspringBold font-bold gap-3 pb-1 textStyle ${
+                className={`flex items-center text-[10px] md:text-sm 2xl:text-base font-fontspringBold font-bold gap-3  textStyle ${
                   pathname === "/public-sale"
                     ? "   font-medium border-b-2 border-sittaris-300"
                     : " "

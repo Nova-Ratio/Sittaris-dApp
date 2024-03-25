@@ -123,7 +123,7 @@ export default function Home() {
         <div className="px-0 grid grid-cols-2 w-full gap-3 md:gap-6 xl:gap-10 ">
           <div className="w-full  gap-6 flex flex-col relative">
             <CircleIcon className="absolute hidden 2xl:block -bottom-10 -left-6 w-36 h-36" />
-            <div className="card !h-fit !px-10 lg:gap-10 2xl:gap-10">
+            <div className="card !h-full !px-10 lg:gap-10 2xl:gap-10">
               <div className="flex flex-col w-full items-center gap-1">
                 <Image
                   src="/logo.svg"
@@ -193,7 +193,7 @@ export default function Home() {
           </div>
 
           <div className="w-full flex flex-col gap-4">
-            {/* <AppDetails addClass=" dark:text-white/70 text-black/70" /> */}
+            <AppDetails addClass=" dark:text-white/70 text-black/70" />
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"
               plantKey={zone.key}

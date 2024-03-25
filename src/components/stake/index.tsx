@@ -58,7 +58,16 @@ export function StakeModal({
       CallAPY();
     }
   }, [modal]);
-
+  const [calcApy, setCalcApy] = useState({
+    days: 45,
+    value: 0,
+  });
+  useEffect(() => {
+    setCalcApy({
+      ...calcApy,
+      value: (((apy / 365) * calcApy.days) / 100 + 1) * amount - amount,
+    });
+  }, [apy, amount]);
   return (
     <Modal title="Stake SIT TOKEN" modal={modal} setModal={setModal}>
       {loading && <Loader />}
@@ -123,20 +132,30 @@ export function StakeModal({
             </div>
           </div>
           <div className="card 2xl:p-6">
-            <h4>Amount to be Received</h4>
+            <h4>Approximate Reward</h4>
             <div className="flex gap-3 justify-between items-center ">
               <div className="relative flex items-center">
                 <InputText
                   type="text"
                   placeholder="1"
-                  disabled
-                  value={Number(Number(amount) * (1 + apy / 100)).toFixed(2)}
+                  value={calcApy.days}
+                  onChange={(e: any) => {
+                    setCalcApy({
+                      days: e.target.value,
+                      value:
+                        (((apy / 365) * Number(e.target.value)) / 100 + 1) *
+                          amount -
+                        amount,
+                    });
+                  }}
                 />
                 <span className="absolute right-3 text-black/60 dark:text-white/60 ">
-                  {amount} {apy}
+                  Days
                 </span>
               </div>
-              <Token amount="SIT" />
+              <div className="flex gap-2 items-center">
+                <Token amount={calcApy.value.toFixed(4) + " SIT"} />
+              </div>
             </div>
           </div>
           <div className="flex w-full justify-end ">
@@ -161,7 +180,7 @@ export function UnstakeModal({
   setUnstakeModal,
   amount,
   setAmount,
-  stakeData
+  stakeData,
 }: {
   unstakeModal: boolean;
   setUnstakeModal: any;
@@ -181,8 +200,6 @@ export function UnstakeModal({
       console.log("error", error);
     }
   }
-
-  
 
   const [unstakeIndex, setUnstakeIndex] = useState(0);
   async function Unstake() {
@@ -254,7 +271,7 @@ export function UnstakeModal({
                   setAmount((stakeData[unstakeIndex]?.amount * item) / 100)
                 }
                 className={` border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2 ${
-                  amount === ((stakeData[unstakeIndex]?.amount * item) / 100)
+                  amount === (stakeData[unstakeIndex]?.amount * item) / 100
                     ? "dark:!border-white !border-black text-black dark:text-white"
                     : "dark:text-white/50 text-black/50"
                 } `}
@@ -265,7 +282,7 @@ export function UnstakeModal({
             <button
               onClick={() => setAmount(stakeData[unstakeIndex]?.amount)}
               className={` border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2 ${
-                amount === (stakeData[unstakeIndex]?.amount)
+                amount === stakeData[unstakeIndex]?.amount
                   ? "dark:!border-white !border-black text-black dark:text-white"
                   : "dark:text-white/50 text-black/50"
               } `}
@@ -331,7 +348,7 @@ export function BottomGrid({
     });
   }, [stakeData]);
   console.log("stakeInfo", stakeInfo);
-  
+
   return (
     <div className="grid grid-cols-2 gap-6">
       <div className="card">

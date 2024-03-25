@@ -7,20 +7,24 @@ import Parametre from "@/components/parameter";
 import ParametreVertical from "@/components/parameterVertical";
 import { AppDetails } from "@/components/appDetails";
 import ZoneApexChart from "@/components/charts/zoneChart";
-import { useState } from "react";
 import { ZoneDropDown } from "@/components/charts";
 import { Zones } from "@/data/zones";
 import { SwitchIcon } from "@/components/icons";
 import { Token } from "@/components/token";
+import { useState } from "react";
+import { useAppSelector } from "@/hook/redux/hooks";
+import { selectData } from "@/redux/auth/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function LeaderBoard() {
   const [zone, setZone] = useState({
     label: "Zone 1",
     key: "plants/P25829",
     name: Zones[0]?.name || "Zone 1",
   });
+  const { price } = useAppSelector(selectData)
+  const [status, setStatus] = useState(false);
   return (
     <MainLayout title="Home">
       <TitleComp
@@ -34,7 +38,7 @@ export default function Home() {
         <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
           <div className="w-1/2  gap-6 flex flex-col ">
             <div className="flex justify-between gap-6 w-full">
-              <div className="w-1/2  max-w-xs">
+              <div className="w-2/3 max-w-sm">
                 <ZoneDropDown
                   placement="bottom-end"
                   setZone={setZone}
@@ -51,8 +55,11 @@ export default function Home() {
                 />
               </div>
               <div className="flex flex-col h-fit gap-2 items-center">
-                <h4>Current currency: $ </h4>
-                <button className="flex items-center gap-2">
+                <h4>Current currency: {status ? "SIT" : "USD"} </h4>
+                <button
+                  onClick={() => setStatus(!status)}
+                  className="flex items-center gap-2"
+                >
                   <SwitchIcon />
                   Switch to SIT
                   <Token amount={""} />
@@ -70,20 +77,22 @@ export default function Home() {
                 {
                   userId: "2",
                   power: 8600,
-                  reward: 100,
+                  reward: 60,
                   level: 5,
                 },
                 {
                   userId: "3",
                   power: 8600,
-                  reward: 100,
+                  reward: 50,
                   level: 5,
                 },
               ].map((item, index) => (
                 <div className="card" key={index}>
                   <div className="flex items-center justify-between w-full">
                     <h2 className="font-fontspringBold">{index + 1}</h2>
-                    <div className="levelCard !p-2">Level {item.level}</div>
+                    <div className="levelCard !px-2 !py-1">
+                      Level {item.level}
+                    </div>
                   </div>
                   <div className="flex flex-col gap-2 text-base w-full">
                     <span className="dark:text-white/80 text-black/80 font-medium">
@@ -92,8 +101,10 @@ export default function Home() {
                     <span className=" font-semibold">{item.power} TH/s</span>
                   </div>
                   <div className="flex flex-col dark:text-white/80 text-black/80">
-                    <span className="text-xs">Daily Reward</span>${item.reward}{" "}
-                    USD
+                    <span className="text-xs">Daily Reward</span>${
+                     status ?  item.reward / price : item.reward
+                    }{" "}
+                    {status ? "SIT" : "USD"}
                   </div>
                 </div>
               ))}
@@ -102,9 +113,9 @@ export default function Home() {
               {[
                 "No",
                 "User ID",
+                "Level",
                 "TH/s",
                 "Daily Reward",
-                "Level",
                 "Weekly Change",
               ].map((item, index) => (
                 <div
@@ -167,10 +178,6 @@ export default function Home() {
                   <span className=" col-span-2 w-full text-center ">
                     {item?.userId}
                   </span>
-                  <span className=" col-span-2 w-full text-center ">{item?.power} TH/s</span>
-                  <span className=" col-span-2 w-full text-center ">
-                    ${item?.reward}
-                  </span>
                   <div className="col-span-2 w-full flex justify-center">
                     <span
                       className={`  w-fit text-center min-w-16 py-0 font-semibold text-white level${item.level} `}
@@ -178,6 +185,15 @@ export default function Home() {
                       Level {item?.level}
                     </span>
                   </div>
+                  <span className=" col-span-2 w-full text-center ">
+                    {item?.power} TH/s
+                  </span>
+                  <span className=" col-span-2 w-full text-center ">
+                    {
+                     status ?  (item.reward / price) + ' SIT' : '$'+ item.reward
+                    }
+                  </span>
+
                   <span className=" col-span-2 w-full text-center ">+ 10%</span>
                 </>
               ))}
@@ -185,8 +201,11 @@ export default function Home() {
           </div>
 
           <div className="w-1/2 flex flex-col gap-4">
-           {/*  <AppDetails addClass=" dark:text-white/70 text-black/70" /> */}
-            <ParametreVertical addClass=" dark:text-white/70 text-black/70" plantKey={zone.key} />
+            <AppDetails addClass=" dark:text-white/70 text-black/70" />
+            <ParametreVertical
+              addClass=" dark:text-white/70 text-black/70"
+              plantKey={zone.key}
+            />
             <ZoneApexChart
               key={zone.key}
               zoneData={zone}
