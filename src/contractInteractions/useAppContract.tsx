@@ -407,6 +407,11 @@ export const callStake = async (amount: any, period: number) => {
 
     const tx = await contractWithSigner.stake(amount, period);
     await tx.wait();
+    ToastSuccess({
+      tHashLink: tx.hash,
+    }).fire({
+      title: "Transaction completed successfully.",
+    });
     return true;
   } catch (error) {
     console.log("Error during stake:", error);
@@ -422,7 +427,7 @@ export const callUnstake = async (index : number, amount: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
     const decimals = await callSitTokenDecimals();
-    const amountToUnstake = amount * 10 ** Number(decimals);
+    const amountToUnstake = parseToDecimals(amount,Number(decimals));
     const tx = await contractWithSigner.unstake(index, amountToUnstake);
     await tx.wait();
     return true;

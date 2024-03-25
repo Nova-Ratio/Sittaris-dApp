@@ -9,6 +9,13 @@ import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
 import { Zones } from "@/data/zones";
 import { BottomGrid, StakeModal, UnstakeModal } from "@/components/stake";
+import { useAppDispatch, useAppSelector } from "@/hook/redux/hooks";
+import { selectData, setLoading } from "@/redux/auth/auth";
+import { callSaleContract } from "@/contractInteractions/ethereumContracts";
+import {
+  callCalculateReward,
+  callStakeInfo,
+} from "@/contractInteractions/useAppContract";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +26,64 @@ export default function Home() {
   const [modal, setModal] = useState(false);
   const [unstakeModal, setUnstakeModal] = useState(false);
   const [amount, setAmount] = useState(0);
+  const { change } = useAppSelector(selectData);
   useEffect(() => {
     setZoneID(Number(id));
   }, [id, router.query]);
 
+  const [stakeData, setStakeData] = useState<any>([
+    {
+      amount: 0,
+      rewardDebt: 0,
+      date: "",
+      isClaimed: false,
+    },
+  ]);
+  const dispatch = useAppDispatch();
+
+  async function getStakeAmount() {
+    try {
+      dispatch(setLoading(true));
+      const { msgSender } = await callSaleContract();
+      let res = await callStakeInfo(msgSender);
+
+      if (res) {
+        //kalan gün hesaplanacak
+        res = await Promise.all(
+          await res.map(async (item: any) => {
+            return { ...item };
+          })
+        );
+        console.log("callStakeInfo", res);
+        let days = (date: any) =>
+          Math.round(
+            (new Date(Number(date) * 1000).getTime() - Date.now()) / 86400000
+          );
+        if (res.length > 0) {
+          setStakeData(
+            await Promise.all(
+              res.map(async (item: any, index: number) => {
+                return {
+                  amount: Number(item[0]) / 10 ** 18,
+                  rewardDebt: Number(item[1]),
+                  date: days(Number(item[2]) + Number(item[3])),
+                  reward: await callCalculateReward(msgSender, index),
+                  isClaimed: item[4],
+                };
+              })
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+  useEffect(() => {
+    getStakeAmount();
+  }, [change, unstakeModal]);
 
   useEffect(() => {
     if (zoneID) {
@@ -39,6 +100,7 @@ export default function Home() {
         setAmount={setAmount}
       />
       <UnstakeModal
+        stakeData={stakeData}
         unstakeModal={unstakeModal}
         setUnstakeModal={setUnstakeModal}
         amount={amount}
@@ -68,7 +130,11 @@ export default function Home() {
             />
           </div>
         </div>
-        <BottomGrid setModal={setModal} setUnstakeModal={setUnstakeModal} />
+        <BottomGrid
+          stakeData={stakeData}
+          setModal={setModal}
+          setUnstakeModal={setUnstakeModal}
+        />
       </div>
     </MainLayout>
   );

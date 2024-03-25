@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import Loader from "../tailwind/Loader";
 import { callSaleContract } from "@/contractInteractions/ethereumContracts";
+import { parseToDecimals } from "@/hook/parse18decimals";
 
 export function StakeModal({
   modal,
@@ -40,8 +41,7 @@ export function StakeModal({
   async function Stake() {
     try {
       dispatch(setLoading(true));
-      let res = await callStake(amount,  period
-        );
+      let res = await callStake(amount, period);
       console.log("res", res);
       if (res) {
         dispatch(setChange(!change));
@@ -57,7 +57,7 @@ export function StakeModal({
     if (modal) {
       CallAPY();
     }
-  }, []);
+  }, [modal]);
 
   return (
     <Modal title="Stake SIT TOKEN" modal={modal} setModal={setModal}>
@@ -130,10 +130,10 @@ export function StakeModal({
                   type="text"
                   placeholder="1"
                   disabled
-                  value={Number(amount) * (1 + apy / 100)}
+                  value={Number(Number(amount) * (1 + apy / 100)).toFixed(2)}
                 />
                 <span className="absolute right-3 text-black/60 dark:text-white/60 ">
-                  Days
+                  {amount} {apy}
                 </span>
               </div>
               <Token amount="SIT" />
@@ -161,20 +161,17 @@ export function UnstakeModal({
   setUnstakeModal,
   amount,
   setAmount,
+  stakeData
 }: {
   unstakeModal: boolean;
   setUnstakeModal: any;
   amount: number;
   setAmount: any;
+  stakeData: any;
 }) {
   const { sitData, loading, change } = useAppSelector(selectData);
   const [apy, setApy] = useState(0);
   const dispatch = useAppDispatch();
-  const [stakeData, setStakeData]: any = useState({
-    amount: 0,
-    date: "",
-    x: "",
-  });
   async function CallAPY() {
     try {
       let apy = await callAPY();
@@ -184,36 +181,9 @@ export function UnstakeModal({
       console.log("error", error);
     }
   }
-  async function getStakeAmount() {
-    try {
-      dispatch(setLoading(true));
-      const { msgSender } = await callSaleContract();
-      let res = await callStakeInfo(msgSender);
-      
-      if (res) {
-        //kalan gün hesaplanacak
-        res = await Promise.all( await res.map(async (item: any) => {
-          return {...item}
-        }
-        ));
 
-        console.log("callStakeInfo", res);
-        let days = Math.floor(
-          (Date.now() - Number(res[2]) * 1000 + 30 * 24 * 60 * 60 * 1000) /
-            (1000 * 60 * 60 * 24)
-        );
-        setStakeData({
-          amount: Number(res[0]),
-          rewardDebt: Number(res[1]),
-          date: days,
-        });
-      }
-    } catch (error) {
-      console.log("error", error);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  }
+  
+
   const [unstakeIndex, setUnstakeIndex] = useState(0);
   async function Unstake() {
     try {
@@ -233,7 +203,6 @@ export function UnstakeModal({
   useEffect(() => {
     if (unstakeModal) {
       CallAPY();
-      getStakeAmount();
     }
   }, [change, unstakeModal]);
   return (
@@ -243,34 +212,63 @@ export function UnstakeModal({
       setModal={setUnstakeModal}
     >
       {loading && <Loader />}
-      <div className="w-[40vw] min-h-52 flex flex-col items-center pt-8">
-        <div className="w-2/3 h-fit flex flex-col gap-6">
-          <div className="card 2xl:p-6">
-            <div className="flex gap-4 items-center justify-between text-xl">
-              <Token amount={"SIT"} />
-              {stakeData.amount}
-            </div>
-            <div className="flex justify-between items-center pt-3 font-normal text-sm">
-              <h5 className="">balance: {sitData.totalBalance} SIT</h5>
+      <div className="w-[50vw] min-h-52 flex flex-col items-center pt-8 px-6">
+        <div className="w-full h-fit flex flex-col gap-6">
+          {stakeData.length === 0 && <h4>No Data</h4>}
+          {stakeData.length > 0 && (
+            <div className="grid grid-cols-2 gap-3 md:gap-6">
+              {stakeData.map((item: any, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setUnstakeIndex(index);
+                    setAmount(item.amount);
+                  }}
+                  className={` ${
+                    unstakeIndex === index
+                      ? "dark:text-white text-black border dark:border-white border-black"
+                      : "dark:text-white/50 text-black/50 border dark:border-white/20 border-black/20  "
+                  } hover:text-black dark:hover:text-white dark:border-white/20 rounded-lg card 2xl:p-6`}
+                >
+                  <div className="flex gap-4 items-center justify-between text-xl">
+                    <Token amount={"SIT"} />
+                    {item.amount}
+                  </div>
+                  <div className="flex justify-between items-center pt-3 font-normal text-sm w-full">
+                    <h5 className="">balance: {sitData.totalBalance} SIT</h5>
 
-              <h5 className="">
-                Unstaking Period: {stakeData.date ? stakeData.date : "0"} Days
-              </h5>
+                    <h5 className="">
+                      Unstaking Period: {item.date ? item.date : "0"} Days
+                    </h5>
+                  </div>
+                </button>
+              ))}
             </div>
-          </div>
+          )}
+
           <div className="grid grid-cols-6 gap-3">
             {[25, 50, 75].map((item, index) => (
               <button
                 key={index}
-                onClick={() => setAmount(stakeData.amount * (item / 100))}
-                className="dark:text-white/50 text-black/50 border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2"
+                onClick={() =>
+                  setAmount((stakeData[unstakeIndex]?.amount * item) / 100)
+                }
+                className={` border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2 ${
+                  amount === ((stakeData[unstakeIndex]?.amount * item) / 100)
+                    ? "dark:!border-white !border-black text-black dark:text-white"
+                    : "dark:text-white/50 text-black/50"
+                } `}
               >
                 {item}%
               </button>
             ))}
             <button
-              onClick={() => setAmount(stakeData.amount)}
-              className="dark:text-white/50 text-black/50 border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2"
+              onClick={() => setAmount(stakeData[unstakeIndex]?.amount)}
+              className={` border hover:text-black dark:hover:text-white dark:border-white/20 border-black/20 rounded-lg py-2 ${
+                amount === (stakeData[unstakeIndex]?.amount)
+                  ? "dark:!border-white !border-black text-black dark:text-white"
+                  : "dark:text-white/50 text-black/50"
+              } `}
             >
               Max
             </button>
@@ -306,11 +304,34 @@ export function UnstakeModal({
 
 export function BottomGrid({
   setModal,
+  stakeData,
   setUnstakeModal,
 }: {
   setModal: any;
+  stakeData: any;
   setUnstakeModal: any;
 }) {
+  const { sitData } = useAppSelector(selectData);
+  const [stakeInfo, setStakeInfo] = useState<any>({
+    currentStake: 0,
+    totalStake: 0,
+    rewards: 0,
+  });
+  useEffect(() => {
+    setStakeInfo({
+      currentStake: stakeData.reduce((acc: number, item: any) => {
+        return acc + item.amount;
+      }, 0),
+      totalStake: stakeData.reduce((acc: number, item: any) => {
+        return acc + item.reward;
+      }, 0),
+      rewards: stakeData.reduce((acc: number, item: any) => {
+        return acc + item.reward;
+      }, 0),
+    });
+  }, [stakeData]);
+  console.log("stakeInfo", stakeInfo);
+  
   return (
     <div className="grid grid-cols-2 gap-6">
       <div className="card">
@@ -334,7 +355,7 @@ export function BottomGrid({
       <div className="card">
         <div className="flex gap-3 items-center w-full justify-between">
           <h4>Current Staking Data</h4>
-          <Token amount={3000} />
+          <Token amount={stakeInfo?.currentStake || 0} />
         </div>
         <div className="flex gap-3 items-center w-full justify-between">
           <div className="border rounded dark:border-white/10 border-black/10 px-3 py-1">
@@ -356,7 +377,7 @@ export function BottomGrid({
       <div className="card">
         <div className="flex gap-3 items-center w-full justify-between">
           <h4>Rewards</h4>
-          <Token amount={10000} />
+          <Token amount={stakeInfo?.rewards.toFixed(6) || 0} />
         </div>
         <div className="flex justify-between items-center gap-6">
           <div>
