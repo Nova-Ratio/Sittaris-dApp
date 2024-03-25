@@ -26,10 +26,7 @@ export function StakeModal({
 }) {
   const { sitData, loading, change } = useAppSelector(selectData);
   const [apy, setApy] = useState(0);
-  const [period, setPeriod] = useState({
-    value: 30,
-    timestamp: 0, // 30 days
-  });
+  const [period, setPeriod] = useState(30);
   const dispatch = useAppDispatch();
   async function CallAPY() {
     try {
@@ -43,7 +40,8 @@ export function StakeModal({
   async function Stake() {
     try {
       dispatch(setLoading(true));
-      let res = await callStake(amount, period.timestamp);
+      let res = await callStake(amount,  period
+        );
       console.log("res", res);
       if (res) {
         dispatch(setChange(!change));
@@ -102,9 +100,9 @@ export function StakeModal({
             {[30, 60, 90].map((item, index) => (
               <button
                 key={index}
-                onClick={() => setPeriod({ value: item, timestamp: index })}
+                onClick={() => setPeriod(item)}
                 className={` ${
-                  period.value === item
+                  period === item
                     ? "dark:text-white text-black border dark:border-white border-black"
                     : "dark:text-white/50 text-black/50 border dark:border-white/20 border-black/20"
                 } hover:text-black dark:hover:text-white dark:border-white/20 rounded-lg py-2`}
@@ -115,14 +113,8 @@ export function StakeModal({
             <div className="col-span-2 relative flex items-center">
               <InputText
                 type="text"
-                disabled
-                value={period.value}
-                onChange={(e: any) =>
-                  setPeriod({
-                    value: Number(e.target.value),
-                    timestamp: Number(e.target.value) * 24 * 60 * 60,
-                  })
-                }
+                value={period}
+                onChange={(e: any) => setPeriod(Number(e.target.value))}
                 placeholder="1"
               />
               <span className="absolute right-3 text-black/60 dark:text-white/60 ">
@@ -138,7 +130,7 @@ export function StakeModal({
                   type="text"
                   placeholder="1"
                   disabled
-                  value={(amount * (1 + apy / 100)).toFixed(2)}
+                  value={Number(amount) * (1 + apy / 100)}
                 />
                 <span className="absolute right-3 text-black/60 dark:text-white/60 ">
                   Days
@@ -197,17 +189,22 @@ export function UnstakeModal({
       dispatch(setLoading(true));
       const { msgSender } = await callSaleContract();
       let res = await callStakeInfo(msgSender);
-      console.log("callStakeInfo", res);
+      
       if (res) {
         //kalan gün hesaplanacak
-        res = await Promise.all(res);
+        res = await Promise.all( await res.map(async (item: any) => {
+          return {...item}
+        }
+        ));
+
+        console.log("callStakeInfo", res);
         let days = Math.floor(
           (Date.now() - Number(res[2]) * 1000 + 30 * 24 * 60 * 60 * 1000) /
             (1000 * 60 * 60 * 24)
         );
         setStakeData({
           amount: Number(res[0]),
-          x: new Date(Number(res[1]) * 1000).toDateString(),
+          rewardDebt: Number(res[1]),
           date: days,
         });
       }
@@ -217,10 +214,11 @@ export function UnstakeModal({
       dispatch(setLoading(false));
     }
   }
+  const [unstakeIndex, setUnstakeIndex] = useState(0);
   async function Unstake() {
     try {
       dispatch(setLoading(true));
-      let res = await callUnstake(amount);
+      let res = await callUnstake(unstakeIndex, amount);
       console.log("res", res);
       if (res) {
         dispatch(setChange(!change));
@@ -292,7 +290,9 @@ export function UnstakeModal({
           <div className="flex w-full justify-end ">
             <button
               onClick={Unstake}
-              disabled={/* amount > stakeData.amount || amount === 0 || */ loading}
+              disabled={
+                /* amount > stakeData.amount || amount === 0 || */ loading
+              }
               className="inlineBtn w-1/2 2xl:text-xl disabled:cursor-not-allowed"
             >
               Unstake

@@ -387,16 +387,18 @@ export const callPurchasedTokens = async (address: string) => {
 //Staking Contract's functions
 export const callStake = async (amount: any, period: number) => {
   try {
+    console.log("all", amount,period);
+    
     const { contractWithSigner, msgSender, stakingAddress } =
       await callStakingContract();
     let decimals = await callSitTokenDecimals();
     let checker = await callAllowance(stakingAddress);
+    amount = await parseToDecimals(amount,decimals);
     console.log(
       "checker",
       Number(checker).toLocaleString("fullwide", { useGrouping: false }),
       amount
     );
-    amount = await parseToDecimals(amount,decimals);
     console.log("amount", amount);
 
     if (Number(checker) < Number(amount)) {
