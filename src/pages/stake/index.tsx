@@ -14,6 +14,7 @@ import {
   callCalculateReward,
   callStakeInfo,
 } from "@/contractInteractions/useAppContract";
+import { AppDetails } from "@/components/appDetails";
 
 export default function Home() {
   const [zoneId, setZoneId] = useState(1);
@@ -95,8 +96,9 @@ export default function Home() {
         description="Lorem ipsum dolor sit amet consectetur. Nibh rhoncus cras ultricies diam arcu venenatis gravida purus. Massa consectetur purus risus tincidunt volutpat in cursus. Quam mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
       <div className=" px-3 flex flex-col gap-6">
+        <AppDetails vertical={true} />
         <h3 className={`${"font-fontspringBold"} font-semibold`}>Stake</h3>
-        <div className=" flex gap-10  w-full ">
+        {/*  <div className=" flex gap-10  w-full ">
           <div className="px-6 w-2/3 border-[3px] text-base border-black/20 dark:border-white/20 rounded-[18px]">
             <ApexChart height={280} setZoneId={setZoneId} seriesNames={true} />
           </div>
@@ -105,7 +107,7 @@ export default function Home() {
               plantKey={zoneId ? Zones[zoneId - 1].ref : "plants/P25829"}
             />
           </div>
-        </div>
+        </div> */}
         <BottomGrid
           stakeData={stakeData}
           setModal={setModal}
