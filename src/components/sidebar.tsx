@@ -63,11 +63,11 @@ export default function Sidebar({ show }: { show: boolean }) {
       title: "Stake",
       icon: "",
       path: "/stake",
-      children: Zones.map((zone, index) => ({
+      children: /* Zones.map((zone, index) => ({
         id: index,
         title: zone.name,
         pathName: (index + 1).toString(),
-      })),
+      })) */ [],
     },
     {
       id: 3,
@@ -155,7 +155,7 @@ export default function Sidebar({ show }: { show: boolean }) {
                   {item.icon}
                   <span>{item.title}</span>
                 </Link>
-                {item?.children && (
+                {item?.children && item?.children.length > 0 && (
                   <button
                     onClick={() => dispatch(toggleMenu(item?.title))}
                     className="flex h-full w-6 items-center justify-end"
