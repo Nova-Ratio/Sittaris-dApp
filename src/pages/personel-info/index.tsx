@@ -75,7 +75,7 @@ export default function Home() {
   useEffect(() => {
     getStakeAmount();
   }, []);
-  
+
   const [stakeInfo, setStakeInfo] = useState<any>({
     currentStake: 0,
     totalStake: 0,
@@ -110,9 +110,9 @@ export default function Home() {
           <div className="levelCard w-full">Level 5</div>
         </div>
 
-        <div className="p-6 flex gap-10 zoneCard w-full ">
-          <div className="w-1/3 flex flex-col gap-10 py-3 ">
-            <div className="flex gap-2 w-full justify-between">
+        <div className="p-6  md:flex gap-10 zoneCard w-full ">
+          <div className="md:w-1/3 w-full flex flex-col gap-10 py-3 ">
+            <div className="flex gap-2 w-full  justify-between">
               <h3 className={`${"font-satoshi"} font-semibold`}>
                 {Zones[0].name}
               </h3>
@@ -120,7 +120,7 @@ export default function Home() {
             </div>
             <ParametreVertical plantKey={Zones[0].ref} />
           </div>
-          <div className=" w-2/3 ">
+          <div className="w-full md:w-2/3 ">
             <ZoneApexChart
               height={280}
               zoneId={1}

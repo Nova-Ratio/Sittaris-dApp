@@ -70,14 +70,18 @@ export default function Home() {
   const [token, setToken] = useState(tokens[0]);
   const [amount, setAmount] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState(paymentMethods[2].id);
-  const { loading,price:sitPrice, sitData,change } = useAppSelector(selectData);
+  const {
+    loading,
+    price: sitPrice,
+    sitData,
+    change,
+  } = useAppSelector(selectData);
   const dispatch = useAppDispatch();
-  
-  
+
   async function buySit() {
     dispatch(setLoading(true));
     try {
-      let res = await callBuyTokens(amount/ sitPrice);
+      let res = await callBuyTokens(amount / sitPrice);
       if (res) {
         console.log("res", res);
         dispatch(setChange(!change));
@@ -88,8 +92,6 @@ export default function Home() {
       dispatch(setLoading(false));
     }
   }
- 
-
 
   return (
     <MainLayout title="Home">
@@ -101,10 +103,10 @@ export default function Home() {
         <h3 className={`${"font-fontspringBold"} font-semibold`}>
           Buy SIT Token
         </h3>
-        <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
-          <div className="w-1/2  gap-6 flex flex-col ">
+        <div className="px-0 md:flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
+          <div className="md:w-1/2 w-full  gap-6 flex flex-col ">
             <div className="flex gap-6 w-full">
-              <div className="w-1/3">
+              <div className="hidden md:flex w-1/3">
                 <Image
                   src="/assets/img/treecircle.svg"
                   alt="buy sit"
@@ -113,7 +115,7 @@ export default function Home() {
                   height={500}
                 />
               </div>
-              <div className="w-2/3 h-fit flex flex-col gap-6">
+              <div className="w-full md:w-2/3 h-fit flex flex-col gap-6">
                 <div className="card">
                   <h4>Amount of Payment</h4>
                   <div className="flex gap-4 items-center">
@@ -172,7 +174,7 @@ export default function Home() {
                     <button
                       key={index}
                       onClick={() => setPaymentMethod(item.id)}
-                      className={`flex dark:text-white items-center justify-between hover:text-sittaris-800 dark:hover:text-[#03AE5A] gap-3 md:gap-6 2xl:gap-8 border-2 rounded dark:border-white/10  border-black/10 py-2 px-3 h-11 w-fit ${
+                      className={`flex dark:text-white items-center justify-between hover:text-sittaris-800 dark:hover:text-[#03AE5A] gap-1 md:gap-6 2xl:gap-8 border-2 rounded dark:border-white/10  border-black/10 py-2 md:px-3 px-1 h-11 w-fit ${
                         paymentMethod === item.id
                           ? "border-sittaris-800 dark:border-sittaris-800 !text-sittaris-800  bg-white backdrop-blur-sm  dark:bg-white/10 "
                           : "border-black/10"
@@ -216,7 +218,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-4">
+          <div className="md:w-1/2 w-full flex flex-col gap-4">
             <AppDetails addClass=" dark:text-white/70 text-black/70" />
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"

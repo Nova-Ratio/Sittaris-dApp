@@ -23,7 +23,7 @@ export default function LeaderBoard() {
     key: "plants/P25829",
     name: Zones[0]?.name || "Zone 1",
   });
-  const { price } = useAppSelector(selectData)
+  const { price } = useAppSelector(selectData);
   const [status, setStatus] = useState(false);
   return (
     <MainLayout title="Home">
@@ -35,8 +35,8 @@ export default function LeaderBoard() {
         <h3 className={`${"font-fontspringBold"} font-semibold`}>
           LeaderBoard
         </h3>
-        <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
-          <div className="w-1/2  gap-6 flex flex-col ">
+        <div className="px-0 md:flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
+          <div className="md:w-1/2  gap-6 flex flex-col ">
             <div className="flex justify-between gap-6 w-full">
               <div className="w-2/3 max-w-sm">
                 <ZoneDropDown
@@ -90,7 +90,7 @@ export default function LeaderBoard() {
                 <div className="card" key={index}>
                   <div className="flex items-center justify-between w-full">
                     <h2 className="font-fontspringBold">{index + 1}</h2>
-                    <div className="levelCard !px-2 !py-1">
+                    <div className="levelCard md:m-0 m-2 !text-sm !md:text-xs !px-2 !py-1">
                       Level {item.level}
                     </div>
                   </div>
@@ -101,9 +101,8 @@ export default function LeaderBoard() {
                     <span className=" font-semibold">{item.power} TH/s</span>
                   </div>
                   <div className="flex flex-col dark:text-white/80 text-black/80">
-                    <span className="text-xs">Daily Reward</span>${
-                     status ?  item.reward / price : item.reward
-                    }{" "}
+                    <span className="text-xs">Daily Reward</span>$
+                    {status ? item.reward / price : item.reward}{" "}
                     {status ? "SIT" : "USD"}
                   </div>
                 </div>
@@ -178,7 +177,7 @@ export default function LeaderBoard() {
                   <span className=" col-span-2 w-full text-center ">
                     {item?.userId}
                   </span>
-                  <div className="col-span-2 w-full flex justify-center">
+                  <div className="col-span-2 w-full pb-5 flex justify-center">
                     <span
                       className={`  w-fit text-center min-w-16 py-0 font-semibold text-white level${item.level} `}
                     >
@@ -189,9 +188,7 @@ export default function LeaderBoard() {
                     {item?.power} TH/s
                   </span>
                   <span className=" col-span-2 w-full text-center ">
-                    {
-                     status ?  (item.reward / price) + ' SIT' : '$'+ item.reward
-                    }
+                    {status ? item.reward / price + " SIT" : "$" + item.reward}
                   </span>
 
                   <span className=" col-span-2 w-full text-center ">+ 10%</span>
@@ -200,7 +197,7 @@ export default function LeaderBoard() {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-4">
+          <div className="md:w-full md:mt-0 mt-10 flex flex-col gap-4">
             <AppDetails addClass=" dark:text-white/70 text-black/70" />
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"

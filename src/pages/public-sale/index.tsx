@@ -116,11 +116,11 @@ export default function Home() {
         title="title of this newsletter section"
         description="Lorem ipsum dolor sit amet consectetur. Nibh rhoncus cras ultricies diam arcu venenatis gravida purus. Massa consectetur purus risus tincidunt volutpat in cursus. Quam mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
-      <div className=" px-3 flex flex-col gap-10">
+      <div className=" px-3 flex flex-col gap-6">
         <h3 className={`${"font-fontspringBold"} font-semibold`}>
           Buy SIT Token
         </h3>
-        <div className="px-0 grid grid-cols-2 w-full gap-3 md:gap-6 xl:gap-10 ">
+        <div className="px-0 grid grid-cols-1 md:grid-cols-2 w-full gap-3 md:gap-6 xl:gap-10 ">
           <div className="w-full  gap-6 flex flex-col relative">
             <CircleIcon className="absolute hidden 2xl:block -bottom-10 -left-6 w-36 h-36" />
             <div className="card !h-full !px-10 lg:gap-10 2xl:gap-10">
@@ -152,7 +152,8 @@ export default function Home() {
                 </div>
                 <div className="w-full bg-black/10 rounded-lg h-8 relative">
                   <div className=" absolute left-0 top-0  h-full w-full flex justify-center items-center">
-                      {((tokenAmount.sold / tokenAmount.total) * 100).toFixed(2)} %
+                    {((tokenAmount.sold / tokenAmount.total) * 100).toFixed(2)}{" "}
+                    %
                   </div>
                   <div
                     className="bg-[#03AE5A] rounded-lg h-8"
@@ -165,7 +166,7 @@ export default function Home() {
               <div className=" w-full">
                 <div className="flex gap-6 items-center">
                   <div className="shrink-0  flex items-center gap-3">
-                    <Token width={32} height={32} amount={""} />
+                    <Token width={25} height={25} amount={""} />
                     <h2 className="">SIT</h2>
                   </div>
                   <InputText
@@ -296,8 +297,9 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-10">
             <div className="grid grid-cols-3 gap-10">
-              <h2>March 2024</h2>
-              <h2>200 SIT</h2>
+              <h2 className="text-sm md:text-3xl">March 2024</h2>
+              <h2 className="text-sm md:text-3xl">200 SIT</h2>
+
               <span className="text-sittaris-800 flex gap-2 items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -317,8 +319,8 @@ export default function Home() {
               </span>
             </div>
             <div className="grid grid-cols-3 gap-10">
-              <h2>April 2024</h2>
-              <h2>200 SIT</h2>
+              <h2 className="text-sm md:text-3xl">April 2024</h2>
+              <h2 className="text-sm md:text-3xl">200 SIT</h2>
             </div>
           </div>
           <button className="inlineBtn  w-1/3 2xl:w-1/4 mt-6">Claim</button>

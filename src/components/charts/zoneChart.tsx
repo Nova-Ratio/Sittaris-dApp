@@ -197,10 +197,10 @@ const ZoneApexChart = ({
           justifyContent: align === "left" ? "flex-start" : "flex-end",
         }}
       >
-        <div className="flex items-center gap-2 ">
+        <div className="flex text-lg md:text-xl items-center gap-2 ">
           Period: <PeriodDropDown period={period} setPeriod={setPeriod} />{" "}
         </div>
-        <div className="flex items-center gap-2 ">
+        <div className="flex text-lg md:text-xl items-center gap-2 ">
           Granularity:
           <GranularitiesDropDown
             period={period}
@@ -210,7 +210,7 @@ const ZoneApexChart = ({
           />
         </div>
       </div>
-      <div className="border-[3px] border-black/20 dark:border-white/20 rounded-[18px] px-6 py-3 w-full">
+      <div className="border-[3px] border-black/20 dark:border-white/20 rounded-[18px] px-1 md:px-6 py-3 w-full">
         <Chart
           options={options}
           series={series}
