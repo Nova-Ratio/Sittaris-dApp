@@ -98,7 +98,6 @@ export default function LeaderBoard() {
                     <span className="dark:text-white/80 text-black/80 font-medium">
                       User ID: {item.userId}{" "}
                     </span>
-                    <span className=" font-semibold">{item.power} TH/s</span>
                   </div>
                   <div className="flex flex-col dark:text-white/80 text-black/80">
                     <span className="text-xs">Daily Reward</span>${
@@ -109,65 +108,62 @@ export default function LeaderBoard() {
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-11 border border-black/30 dark:border-white/30 rounded-full p-2">
+            <div className="grid grid-cols-7 border border-black/30 dark:border-white/30 rounded-full p-2">
               {[
                 "No",
-                "User ID",
-                "Level",
-                "TH/s",
-                "Daily Reward",
-                "Weekly Change",
+                "Address",
+                "Point",
               ].map((item, index) => (
                 <div
                   key={index}
-                  className="flex first:col-span-1 col-span-2 items-center justify-center"
+                  className={`flex first:col-span-1  items-center w-full justify-center  ${index === 1 ? ' col-span-4' : ' col-span-2 '} `}
                 >
                   <h5 className="text-xs">{item}</h5>
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-11 gap-3 text-sm font-medium px-3">
+            <div className="grid grid-cols-7 gap-3 text-sm font-medium px-3">
               {[
                 {
                   userId: "11",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:  "inj1akqp…8g3xu",
                   level: 5,
                 },
                 {
                   userId: "22",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:"inj1akqp…8g3xu",
                   level: 4,
                 },
                 {
                   userId: "33",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:"inj1akqp…8g3xu",
                   level: 3,
                 },
                 {
                   userId: "45",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:"inj1akqp…8g3xu",
                   level: 3,
                 },
                 {
                   userId: "57",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:"inj1akqp…8g3xu",
                   level: 2,
                 },
                 {
                   userId: "69",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:"inj1akqp…8g3xu",
                   level: 2,
                 },
                 {
                   userId: "71",
-                  power: 8600,
-                  reward: 100,
+                  point:7600,
+                  address:"inj1akqp…8g3xu",
                   level: 1,
                 },
               ].map((item, index) => (
@@ -175,26 +171,28 @@ export default function LeaderBoard() {
                   <span className="text-base font-semibold first:col-span-1  w-full text-center ">
                     {index + 1}
                   </span>
-                  <span className=" col-span-2 w-full text-center ">
-                    {item?.userId}
+                  <span className=" col-span-4 w-full text-center ">
+                    {item?.address}
                   </span>
-                  <div className="col-span-2 w-full flex justify-center">
+                 {/*  <div className="col-span-2 w-full flex justify-center">
                     <span
                       className={`  w-fit text-center min-w-16 py-0 font-semibold text-white level${item.level} `}
                     >
                       Level {item?.level}
                     </span>
-                  </div>
-                  <span className=" col-span-2 w-full text-center ">
-                    {item?.power} TH/s
-                  </span>
-                  <span className=" col-span-2 w-full text-center ">
+                  </div> */}
+                 
+                  {/* <span className=" col-span-2 w-full text-center ">
                     {
                      status ?  (item.reward / price) + ' SIT' : '$'+ item.reward
                     }
-                  </span>
+                  </span> */}
 
-                  <span className=" col-span-2 w-full text-center ">+ 10%</span>
+                  <span className=" col-span-2 w-full text-center ">
+                    {
+                      item.point
+                    }
+                  </span>
                 </>
               ))}
             </div>

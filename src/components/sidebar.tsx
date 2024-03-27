@@ -52,12 +52,12 @@ export default function Sidebar({ show }: { show: boolean }) {
       icon: "",
       path: "/",
     },
-    {
+    /* {
       id: 1,
       title: "Personal Information",
       icon: "",
       path: "/personel-info",
-    },
+    }, */
     {
       id: 2,
       title: "Stake",
