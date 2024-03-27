@@ -500,10 +500,10 @@ export const callAPY = async () => {
   }
 };
 
-export const callGetPendingUnstakeRequestsInfo = async (holder: string, stakeIndex: number) => {
+export const callGetPendingUnstakeRequestsInfo = async (holder: string) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
-    const pendingUnstakeRequestsInfo = await contractWithSigner.getPendingUnstakeRequestsInfo(holder, stakeIndex);
+    const pendingUnstakeRequestsInfo = await contractWithSigner.getPendingUnstakeRequestsInfo(holder);
     return pendingUnstakeRequestsInfo;
   } catch (error) {
     console.error("Error during getPendingUnstakeRequestsInfo:", error);
