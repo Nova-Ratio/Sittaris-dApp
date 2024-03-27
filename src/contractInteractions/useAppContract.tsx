@@ -387,18 +387,16 @@ export const callPurchasedTokens = async (address: string) => {
 //Staking Contract's functions
 export const callStake = async (amount: any, period: number) => {
   try {
-    console.log("all", amount,period);
-    
     const { contractWithSigner, msgSender, stakingAddress } =
       await callStakingContract();
     let decimals = await callSitTokenDecimals();
     let checker = await callAllowance(stakingAddress);
-    amount = await parseToDecimals(amount,decimals);
     console.log(
       "checker",
       Number(checker).toLocaleString("fullwide", { useGrouping: false }),
       amount
     );
+    amount = await parseToDecimals(amount,decimals);
     console.log("amount", amount);
 
     if (Number(checker) < Number(amount)) {
@@ -407,11 +405,6 @@ export const callStake = async (amount: any, period: number) => {
 
     const tx = await contractWithSigner.stake(amount, period);
     await tx.wait();
-    ToastSuccess({
-      tHashLink: tx.hash,
-    }).fire({
-      title: "Transaction completed successfully.",
-    });
     return true;
   } catch (error) {
     console.log("Error during stake:", error);
@@ -427,7 +420,7 @@ export const callUnstake = async (index : number, amount: number) => {
   try {
     const { contractWithSigner, msgSender } = await callStakingContract();
     const decimals = await callSitTokenDecimals();
-    const amountToUnstake = parseToDecimals(amount,Number(decimals));
+    const amountToUnstake = amount * 10 ** Number(decimals);
     const tx = await contractWithSigner.unstake(index, amountToUnstake);
     await tx.wait();
     return true;
@@ -506,3 +499,36 @@ export const callAPY = async () => {
     return false;
   }
 };
+
+export const callGetPendingUnstakeRequestsInfo = async (holder: string, stakeIndex: number) => {
+  try {
+    const { contractWithSigner, msgSender } = await callStakingContract();
+    const pendingUnstakeRequestsInfo = await contractWithSigner.getPendingUnstakeRequestsInfo(holder, stakeIndex);
+    return pendingUnstakeRequestsInfo;
+  } catch (error) {
+    console.error("Error during getPendingUnstakeRequestsInfo:", error);
+    //alert("There was an error during the getPendingUnstakeRequestsInfo process. Please try again.");
+    ToastError.fire({
+      title:
+        "There was an error during the getPendingUnstakeRequestsInfo process. Please try again.",
+    });
+    return false;
+  }
+}
+
+export const callclaimUnstakedAmount = async (holder: string, stakeIndex: number) => {
+  try {
+    const { contractWithSigner, msgSender } = await callStakingContract();
+    const tx = await contractWithSigner.claimUnstakedAmount(holder, stakeIndex);
+    await tx.wait();
+    return true;
+  } catch (error) {
+    console.error("Error during claimUnstakedAmount:", error);
+    //alert("There was an error during the claimUnstakedAmount process. Please try again.");
+    ToastError.fire({
+      title:
+        "There was an error during the claimUnstakedAmount process. Please try again.",
+    });
+    return false;
+  }
+}
