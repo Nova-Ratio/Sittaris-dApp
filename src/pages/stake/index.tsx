@@ -12,6 +12,7 @@ import { selectData, setLoading } from "@/redux/auth/auth";
 import { callSaleContract } from "@/contractInteractions/ethereumContracts";
 import {
   callCalculateReward,
+  callGetPendingUnstakeRequestsInfo,
   callStakeInfo,
 } from "@/contractInteractions/useAppContract";
 import { AppDetails } from "@/components/appDetails";
@@ -72,8 +73,26 @@ export default function Home() {
       dispatch(setLoading(false));
     }
   }
+  async function getUnstakeInfo() {
+    try {
+      const { msgSender } = await callSaleContract();
+      let res = await callGetPendingUnstakeRequestsInfo(msgSender);
+
+      console.log(
+        "callGetPendingUnstakeRequestsInfo",
+        await Promise.all(
+          await res.map(async (item: any) => {
+            return { ...item };
+          })
+        )
+      );
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
   useEffect(() => {
     getStakeAmount();
+    getUnstakeInfo();
   }, [change, unstakeModal]);
   return (
     <MainLayout title="Home">
