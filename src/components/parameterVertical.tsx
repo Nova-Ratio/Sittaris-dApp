@@ -91,7 +91,7 @@ export default function ParametreVertical({
     getSumData();
   }, [parameterPeriod]);
   return (
-    <div className={`w-full flex flex-col gap-1 ${addClass} `} >
+    <div className={`w-full flex flex-col gap-1 ${addClass} `}>
       <div className="flex items-center gap-3 w-full justify-between">
         <button
           /* onClick={() => setActiveParametre(!activeParametre)} */
@@ -124,9 +124,8 @@ export default function ParametreVertical({
         />
       </div>
       <AnimateHeight height={activeParametre ? "auto" : 0}>
-        <div className="w-full grid gap-3 md:gap-6 py-3 ">
+        <div className="w-full md:grid flex gap-5 md:gap-6 py-3 ">
           {[
-            
             {
               label: "Energy Specific (Obsolete)",
               value: parameterData.specific,

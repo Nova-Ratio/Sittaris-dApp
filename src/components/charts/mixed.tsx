@@ -199,11 +199,11 @@ const ApexChart = ({
             data={data}
           />
         </div>
-        <div className=" flex  gap-3">
-          <div className="flex items-center gap-2 ">
+        <div className=" flex gap-1 md:gap-3">
+          <div className="flex md:text-l text-sm items-center gap-2 ">
             Period: <PeriodDropDown period={period} setPeriod={setPeriod} />{" "}
           </div>
-          <div className="flex items-center gap-2 ">
+          <div className="flex md:text-l text-sm items-center gap-2 ">
             Granularity:
             <GranularitiesDropDown
               period={period}

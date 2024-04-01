@@ -350,7 +350,7 @@ export function BottomGrid({
   console.log("stakeInfo", stakeInfo);
 
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="card">
         <div className="flex gap-3 items-center w-full justify-between">
           <h4>Total Staking SIT Token</h4>
