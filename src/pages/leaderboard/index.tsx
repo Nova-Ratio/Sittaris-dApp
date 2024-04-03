@@ -36,8 +36,8 @@ export default function LeaderBoard() {
           LeaderBoard
         </h3>
         <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
-          <div className="w-1/2  gap-6 flex flex-col ">
-            <div className="flex justify-between gap-6 w-full">
+          <div className="w-2/3  gap-6 flex flex-col ">
+            {/* <div className="flex justify-between gap-6 w-full">
               <div className="w-2/3 max-w-sm">
                 <ZoneDropDown
                   placement="bottom-end"
@@ -65,7 +65,7 @@ export default function LeaderBoard() {
                   <Token amount={""} />
                 </button>
               </div>
-            </div>
+            </div> */}
             <div className="grid grid-cols-3 gap-5">
               {[
                 {
@@ -198,7 +198,7 @@ export default function LeaderBoard() {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-4">
+          {/* <div className="w-1/2 flex flex-col gap-4">
             <AppDetails addClass=" dark:text-white/70 text-black/70" />
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"
@@ -211,7 +211,7 @@ export default function LeaderBoard() {
               seriesNames={true}
               align="left"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </MainLayout>
