@@ -7,7 +7,7 @@ export default function TitleComp({
 }) {
   return (
     <>
-      {/* <div
+      <div
       className={`${'font-fontspring'} titleBack font-satoshi
       flex items-center gap-6 w-full p-6`}
       >
@@ -19,7 +19,7 @@ export default function TitleComp({
       <p className="w-2/3 flex text-base font-normal">
       {description}
       </p>
-    </div> */}
+    </div>
     </>
   );
 }
