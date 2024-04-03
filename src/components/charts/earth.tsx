@@ -38,17 +38,17 @@ export default function EarthInfo({
     getEarthInfo();
   }, []);
   return (
-    <div className={`grid grid-cols-3 gap-10 px-3 md:p-6 ${addClass} `}>
-      <div className="w-full justify-center items-center flex">
+    <div className={`grid grid-cols-5 gap-6 md:gap-10 px-3 md:p-6 ${addClass} `}>
+      <div className="w-full col-span-2 justify-center items-center flex">
         <Image
           src="/assets/img/earth.png"
           width={500}
           height={500}
-          className="w-full h-fit"
+          className="w-2/3 h-fit"
           alt="earth"
         />
       </div>
-      <div className=" col-span-2 w-full font-medium flex flex-col gap-6">
+      <div className=" col-span-3 w-full font-medium flex flex-col gap-6">
         <div className=" w-full flex items-center gap-6">
           <Image
             src="/assets/img/energy.png"
