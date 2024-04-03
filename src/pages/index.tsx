@@ -8,13 +8,14 @@ import ParametreVertical from "@/components/parameterVertical";
 import { AppDetails } from "@/components/appDetails";
 import { useState } from "react";
 import { Zones } from "@/data/zones";
+import EarthInfo from "@/components/charts/earth";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [zoneId, setZoneId] = useState(1);
   //console.log(zoneId);
-  
+
   return (
     <MainLayout title="Home">
       <TitleComp
@@ -22,9 +23,8 @@ export default function Home() {
         description="Lorem ipsum dolor sit amet consectetur. Nibh rhoncus cras ultricies diam arcu venenatis gravida purus. Massa consectetur purus risus tincidunt volutpat in cursus. Quam mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
       <div className=" px-3 flex flex-col gap-6">
-        <h3 className={`${'font-fontspringBold'} font-semibold`}>
-          Dashboard
-        </h3>
+        <h3 className={`${"font-fontspringBold"} font-semibold`}>Dashboard</h3>
+        <EarthInfo />
         <div className="px-3 md:px-6 border-[3px] border-black/20 dark:border-white/20 rounded-[18px]">
           <ApexChart setZoneId={setZoneId} seriesNames={true} />
         </div>
@@ -32,7 +32,7 @@ export default function Home() {
           <div className="flex w-full md:border-r pr-6 border-white/60">
             <AppDetails />
           </div>
-          <ParametreVertical plantKey={Zones[zoneId-1].ref} />
+          <ParametreVertical plantKey={Zones[zoneId - 1].ref} />
         </div>
       </div>
     </MainLayout>

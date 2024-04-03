@@ -23,6 +23,8 @@ import {
 } from "@/contractInteractions/useAppContract";
 import { callSaleContract } from "@/contractInteractions/ethereumContracts";
 import { CircleIcon } from "@/components/icons";
+import EarthInfo from "@/components/charts/earth";
+import EarthInfoVertical from "@/components/charts/earthVertical";
 
 export default function Home() {
   const [zone, setZone] = useState({
@@ -117,11 +119,11 @@ export default function Home() {
         description="Lorem ipsum dolor sit amet consectetur. Nibh rhoncus cras ultricies diam arcu venenatis gravida purus. Massa consectetur purus risus tincidunt volutpat in cursus. Quam mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
       <div className=" px-3 flex flex-col gap-10">
-        <h3 className={`${"font-fontspringBold"} font-semibold`}>
+        {/* <h3 className={`${"font-fontspringBold"} font-semibold`}>
           Buy SIT Token
-        </h3>
-        <div className="px-0 grid grid-cols-2 w-full gap-3 md:gap-6 xl:gap-10 ">
-          <div className="w-full  gap-6 flex flex-col relative">
+        </h3> */}
+        <div className="px-0 grid grid-cols-5 w-full gap-3 ">
+          <div className="w-full col-span-2  gap-6 flex flex-col relative">
             <CircleIcon className="absolute hidden 2xl:block -bottom-10 -left-6 w-36 h-36" />
             <div className="card !h-full !px-10 lg:gap-10 2xl:gap-10">
               <div className="flex flex-col w-full items-center gap-1">
@@ -192,8 +194,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-4">
-            <AppDetails addClass=" dark:text-white/70 text-black/70" />
+          <div className="w-full col-span-3 flex flex-col gap-4">
+            {/* <AppDetails addClass=" dark:text-white/70 text-black/70" />
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"
               plantKey={zone.key}
@@ -204,7 +206,8 @@ export default function Home() {
               height={280}
               seriesNames={true}
               align="left"
-            />
+            /> */}
+            <EarthInfoVertical addClass="text-sm gap-4" />
           </div>
         </div>
         <div className="card items-center 2xl:gap-10 !py-10 relative">

@@ -77,7 +77,7 @@ const ApexChart = ({
         end_date || "",
         zone.key
       );
-      await synaptiq.getZones();
+      //await synaptiq.getZones();
       setLineData(column || []);
       let line = await synaptiq.getIndicatorData(
         NewToken,

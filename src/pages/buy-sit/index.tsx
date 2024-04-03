@@ -102,13 +102,13 @@ export default function Home() {
           Buy SIT Token
         </h3>
         <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
-          <div className="w-1/2  gap-6 flex flex-col ">
+          <div className="w-2/3  gap-6 flex flex-col ">
             <div className="flex gap-6 w-full">
-              <div className="w-1/3">
+              <div className="w-1/3 flex justify-center">
                 <Image
                   src="/assets/img/treecircle.svg"
                   alt="buy sit"
-                  className="w-full"
+                  className=" w-full 2xl:w-2/3"
                   width={500}
                   height={500}
                 />
@@ -216,7 +216,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-4">
+          {/* <div className="w-1/2 flex flex-col gap-4">
             <AppDetails addClass=" dark:text-white/70 text-black/70" />
             <ParametreVertical
               addClass=" dark:text-white/70 text-black/70"
@@ -229,7 +229,7 @@ export default function Home() {
               seriesNames={true}
               align="left"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </MainLayout>
