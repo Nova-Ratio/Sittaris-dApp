@@ -50,7 +50,7 @@ export default function Modal({
               >
                 <Dialog.Panel className="panel  absolute z-10 flex w-fit max-w-[95vw]  bg-white/80 dark:bg-black/75 backdrop-blur-sm flex-col  overflow-hidden rounded-lg  p-0 text-black dark:text-white  2xl:max-w-[80vw] shadow-md shadow-white/20">
                   <div className=" h-fit  w-full flex flex-col py-10 overflow-y-auto relative">
-                    <div className="flex absolute left-0 top-0 h-14 w-full items-end justify-between bg-purple px-6 text-sm font-semibold text-white md:text-xl">
+                    <div className="flex absolute left-0 top-0 h-14 w-full items-end justify-between bg-purple px-6 text-sm font-semibold text-black dark:text-white md:text-xl">
                       <h2>{title}</h2>
                       <button
                         type="button"
