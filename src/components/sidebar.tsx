@@ -95,12 +95,12 @@ export default function Sidebar({ show }: { show: boolean }) {
     <nav
       className={` ${
         show
-          ? " absolute left-0 top-14 md:top-0 z-50 w-full  "
-          : " hidden md:flex"
-      } font-fontspring w-full bg-black/40 bgGradientLight  dark:bgGradient md:!bgClear  md:w-72 flex pt-12 border-r border-sittaris-300/10 px-3 md:px-4`}
+          ? " fixed left-0 top-0 pt-16 md:pt-24 xl:top-0 z-50 w-full h-full "
+          : " hidden xl:flex"
+      } font-fontspring w-full bg-black/40 bgGradientLight  dark:bgGradient xl:!bgClear  xl:w-72 flex pt-12 border-r border-sittaris-300/10 px-3 md:px-4`}
     >
       {
-        <ul className="flex flex-col items-center md:items-start gap-8  z-10 text-black/70 dark:text-white/70 h-[85vh] overflow-y-auto w-full pb-12 py-2">
+        <ul className="flex flex-col items-center xl:items-start gap-8  z-10 text-black/70 dark:text-white/70 h-full xl:h-[85vh] overflow-y-auto w-full pb-12 py-2">
           <li
             key={"connectwallet"}
             className=" flex items-center font-manrope gap-3 text-xs xl:text-sm dark:text-white"
@@ -126,7 +126,7 @@ export default function Sidebar({ show }: { show: boolean }) {
               </button>
             )}
           </li>
-          <li className="md:hidden">
+          <li className="xl:hidden">
             <Link
               href="/public-sale"
               className={`flex items-center text-[10px] md:text-sm 2xl:text-base font-fontspringBold font-bold gap-3 pb-1 textStyle ${
@@ -172,7 +172,7 @@ export default function Sidebar({ show }: { show: boolean }) {
               </div>
               {item?.children && (
                 <AnimateHeight height={currentMenu === item.title ? "auto" : 0}>
-                  <ul className="flex md:list-disc flex-col w-full gap-2 pt-3 font-satoshi text-xs md:text-base ">
+                  <ul className="flex xl:list-disc flex-col w-full gap-2 pt-3 font-satoshi text-xs md:text-base ">
                     {item?.children &&
                       item?.children?.length > 0 &&
                       item?.children.map((child: any) => {

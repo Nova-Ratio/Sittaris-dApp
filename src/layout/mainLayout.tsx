@@ -26,7 +26,7 @@ export default function MainLayout({
         className={`flex min-h-[100dvh] h-full w-full flex-col items-center justify-end  relative   dark:text-white text-black pt-10 md:pt-28 ${""} font-satoshi max-w-[100vw] 2xl:max-w-[1920px]  mx-auto text-xs md:text-sm 2xl:text-base`}
       >
         <Header setShow={setShow} show={show} />
-        <div className="flex w-full min-h-[80vh] z-10 ">
+        <div className="flex w-full min-h-[80vh] z-[21] ">
           <Sidebar show={show} />
           <div className="px-3 py-3 md:py-4 md:px-6 w-full flex flex-col gap-6">
             {children}

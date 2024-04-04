@@ -34,7 +34,7 @@ export default function Home() {
     total: 0,
   });
   const [myTokenAmount, setMyTokenAmount] = useState({
-    claimed: 200,
+    claimed: 400,
     total: 2400,
     claimedMonth: 1,
   });
@@ -211,17 +211,16 @@ export default function Home() {
         <div className="card items-center 2xl:gap-10 !py-10 relative">
           <CircleIcon className="absolute hidden 2xl:block -top-10 -right-3 w-20 h-20" />
           <CircleIcon className="absolute hidden 2xl:block -top-8 left-20 w-28 h-28" />
-          <div className="flex gap-3 text-xl">
+          <div className="flex gap-3 text-xs md:text-xl">
             <span>My Sittaris (SIT) Token Amount:</span>
             <b>
-              {" "}
               {myTokenAmount.claimed} / {myTokenAmount.total}{" "}
             </b>
           </div>
-          <div className="flex items-end flex-col gap-2">
-            <div className="h-fit !w-fit card  !flex-row !p-0 relative">
+          <div className="flex items-start flex-col gap-2 w-full overflow-x-auto ">
+            <div className="h-fit  card !gap-0 md:!gap-4 !min-w-[700px] md:!min-w-[1000px]   !flex-row !p-0 relative">
               <div
-                className="bg-[#03AE5A] rounded-lg absolute left-0 top  h-full z-0"
+                className="bg-[#03AE5A] rounded-lg absolute left-0  md:w-full  h-full z-0"
                 style={{
                   width: `${
                     (myTokenAmount.claimed / myTokenAmount.total) * 100
@@ -291,14 +290,15 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
             <span className="text-xs dark:text-white/60 text-black/60">
               {myTokenAmount.claimedMonth} / 12 M
             </span>
           </div>
           <div className="flex flex-col gap-10">
             <div className="grid grid-cols-3 gap-10">
-              <h2 className="text-sm md:text-3xl">March 2024</h2>
-              <h2 className="text-sm md:text-3xl">200 SIT</h2>
+              <h2 className="text-xs md:text-3xl">March 2024</h2>
+              <h2 className="text-xs md:text-3xl">200 SIT</h2>
 
               <span className="text-sittaris-800 flex gap-2 items-center">
                 <svg
@@ -323,7 +323,7 @@ export default function Home() {
               <h2 className="text-sm md:text-3xl">200 SIT</h2>
             </div>
           </div>
-          <button className="inlineBtn  w-1/3 2xl:w-1/4 mt-6">Claim</button>
+          <button className="inlineBtn  w-1/3 2xl:w-1/4 mt-6 !text-xs md:text-base">Claim</button>
         </div>
       </div>
     </MainLayout>

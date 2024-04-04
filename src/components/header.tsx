@@ -88,7 +88,7 @@ export default function Header({
     <>
       {loading && <Loader />}
       <header className=" fixed  bg-black/20 backdrop-blur-sm md:bg-transparent md:dark:bg-transparent left-0 top-0 w-[100vw] px-3 md:px-6 py-1 md:py-0  z-40">
-        <div className="flex items-center justify-center md:justify-between w-full h-9 md:h-fit">
+        <div className="flex items-center justify-center md:justify-between w-full h-9 md:h-fit max-w-[1900px] mx-auto">
           <Link
             href="/"
             className="shrink-0 absolute md:relative  top-0 flex gap-2 md:gap-4 items-center"
@@ -105,11 +105,11 @@ export default function Header({
           <div className="flex items-center justify-between md:justify-start gap-6 dark:text-white w-full md:w-auto">
             <button
               onClick={() => setShow(!show)}
-              className=" md:hidden text-black dark:text-white/60 py-1 hover:text-black dark:hover:text-white transition-colors"
+              className=" xl:hidden text-black dark:text-white/60 py-1 hover:text-black dark:hover:text-white transition-colors"
             >
               <HambugerIcon className="w-4 h-fit " />
             </button>
-            <div className="hidden md:flex gap-0 items-center">
+            <div className="hidden xl:flex gap-0 items-center">
               <Link
                 href="/public-sale"
                 className={`flex items-center text-[10px] md:text-sm 2xl:text-base font-fontspringBold font-bold gap-3  textStyle ${
