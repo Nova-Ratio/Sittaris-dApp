@@ -56,6 +56,8 @@ export default function Parametre({
         end_date || "",
         plant
       );
+      console.log("specific", specific);
+      
       let sumSpecific = specific.data.reduce(
         (acc: any, item: any) => acc + item[1][0][0],
         0
@@ -127,7 +129,7 @@ export default function Parametre({
           {[
             
             {
-              label: "Energy Specific (Obsolete)",
+              label: "Capacity DC [kWp]",
               value: parameterData.specific,
               scale: "kWh/kWp",
             },

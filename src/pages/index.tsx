@@ -29,9 +29,9 @@ export default function Home() {
           <ApexChart setZoneId={setZoneId} seriesNames={true} />
         </div>
         <div className="grid md:grid-cols-2 gap-6  font-normal md:font-medium ">
-          <div className="flex w-full md:border-r pr-6 border-white/60">
+          {/* <div className="flex w-full md:border-r pr-6 border-white/60">
             <AppDetails />
-          </div>
+          </div> */}
           <ParametreVertical plantKey={Zones[zoneId - 1].ref} />
         </div>
       </div>

@@ -49,7 +49,7 @@ export default function ParametreVertical({
         (item) => item.key === parameterPeriod.key
       )?.end_date?.toISOString();
       let gran = PeriodData.find((item) => item.key === parameterPeriod.key);
-      let specific = await synaptiq.getIndicatorData(
+      /* let specific = await synaptiq.getIndicatorData(
         NewToken,
         gran?.["default-granularity"] || "1-hours",
         "energy.specific",
@@ -57,10 +57,15 @@ export default function ParametreVertical({
         end_date || "",
         plant
       );
+      console.log("specific", specific);
       let sumSpecific = specific.data.reduce(
         (acc: any, item: any) => acc + item[1][0][0],
         0
-      );
+      ); */
+      let getPlant = await synaptiq.getZones();
+      let plantData = getPlant.find((item: any) => item.ref === plant);
+      let sumSpecific = plantData?.capacity_dc || 0;
+      console.log("plantData", plantData);
       //console.log("sumSpecific", sumSpecific.toFixed(2));
       setParameterData((prev: any) => ({
         ...prev,
@@ -97,7 +102,7 @@ export default function ParametreVertical({
           /* onClick={() => setActiveParametre(!activeParametre)} */
           className="flex items-center text-2xl gap-2 text-sittaris-300"
         >
-          <h3>Parameter</h3>
+          {/* <h3>Parameter</h3> */}
           {/* <svg
             width="16"
             height="16"
@@ -128,9 +133,9 @@ export default function ParametreVertical({
           {[
             
             {
-              label: "Energy Specific (Obsolete)",
+              label: "Capacity DC [kWp]",
               value: parameterData.specific,
-              scale: "kWh/kWp",
+              scale: "kWp",
             },
             {
               label: "Energy (kWh)",
