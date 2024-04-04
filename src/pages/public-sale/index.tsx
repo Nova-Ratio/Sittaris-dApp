@@ -27,6 +27,7 @@ import EarthInfo from "@/components/charts/earth";
 import EarthInfoVertical from "@/components/charts/earthVertical";
 
 export default function Home() {
+  const [show, setShow] = useState(false);
   const [zone, setZone] = useState({
     label: "Zone 1",
     key: "plants/P25829",
@@ -105,6 +106,7 @@ export default function Home() {
       console.log("error", error);
     } finally {
       dispatch(setLoading(false));
+      setShow(true);
     }
   }
 
@@ -154,7 +156,8 @@ export default function Home() {
                 </div>
                 <div className="w-full bg-black/10 rounded-lg h-8 relative">
                   <div className=" absolute left-0 top-0  h-full w-full flex justify-center items-center">
-                      {((tokenAmount.sold / tokenAmount.total) * 100).toFixed(2)} %
+                    {((tokenAmount.sold / tokenAmount.total) * 100).toFixed(2)}{" "}
+                    %
                   </div>
                   <div
                     className="bg-[#03AE5A] rounded-lg h-8"
@@ -210,122 +213,124 @@ export default function Home() {
             <EarthInfoVertical addClass="text-sm gap-4" />
           </div>
         </div>
-        <div className="card items-center 2xl:gap-10 !py-10 relative">
-          <CircleIcon className="absolute hidden 2xl:block -top-10 -right-3 w-20 h-20" />
-          <CircleIcon className="absolute hidden 2xl:block -top-8 left-20 w-28 h-28" />
-          <div className="flex gap-3 text-xl">
-            <span>My Sittaris (SIT) Token Amount:</span>
-            <b>
-              {" "}
-              {myTokenAmount.claimed} / {myTokenAmount.total}{" "}
-            </b>
-          </div>
-          <div className="flex items-end flex-col gap-2">
-            <div className="h-fit !w-fit card  !flex-row !p-0 relative">
-              <div
-                className="bg-[#03AE5A] rounded-lg absolute left-0 top  h-full z-0"
-                style={{
-                  width: `${
-                    (myTokenAmount.claimed / myTokenAmount.total) * 100
-                  }%`,
-                }}
-              />
-              {[
-                {
-                  id: 2,
-                  name: "March",
-                },
-                {
-                  id: 3,
-                  name: "April",
-                },
-                {
-                  id: 4,
-                  name: "May",
-                },
-                {
-                  id: 5,
-                  name: "June",
-                },
-                {
-                  id: 6,
-                  name: "July",
-                },
-                {
-                  id: 7,
-                  name: "August",
-                },
-                {
-                  id: 8,
-                  name: "September",
-                },
-                {
-                  id: 9,
-                  name: "October",
-                },
-                {
-                  id: 10,
-                  name: "November",
-                },
-                {
-                  id: 11,
-                  name: "December",
-                },
-                {
-                  id: 12,
-                  name: "January",
-                },
-                {
-                  id: 1,
-                  name: "February",
-                },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex z-10 border-2 rounded-md border-transparent p-2 gap-3 items-center"
-                  style={{
-                    //this month active
-                    borderColor:
-                      new Date().getMonth() + 1 === item.id ? "#03AE5A" : "",
-                  }}
-                >
-                  <span>{item.name}</span>
-                </div>
-              ))}
+        {show && (
+          <div className="card items-center 2xl:gap-10 !py-10 relative">
+            <CircleIcon className="absolute hidden 2xl:block -top-10 -right-3 w-20 h-20" />
+            <CircleIcon className="absolute hidden 2xl:block -top-8 left-20 w-28 h-28" />
+            <div className="flex gap-3 text-xl">
+              <span>My Sittaris (SIT) Token Amount:</span>
+              <b>
+                {" "}
+                {myTokenAmount.claimed} / {myTokenAmount.total}{" "}
+              </b>
             </div>
-            <span className="text-xs dark:text-white/60 text-black/60">
-              {myTokenAmount.claimedMonth} / 12 M
-            </span>
-          </div>
-          <div className="flex flex-col gap-10">
-            <div className="grid grid-cols-3 gap-10">
-              <h2>March 2024</h2>
-              <h2>200 SIT</h2>
-              <span className="text-sittaris-800 flex gap-2 items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M19.6585 6.24744C20.0742 6.61112 20.1163 7.24288 19.7526 7.65852L11.0026 17.6585C10.6403 18.0726 10.0114 18.1162 9.59546 17.756L4.34546 13.2106C3.92792 12.8491 3.8825 12.2175 4.244 11.8C4.6055 11.3825 5.23704 11.337 5.65457 11.6985L10.1525 15.5929L18.2474 6.34151C18.6111 5.92587 19.2429 5.88375 19.6585 6.24744Z"
-                    fill="#03AE58"
-                  />
-                </svg>
-                Claimed
+            <div className="flex items-end flex-col gap-2">
+              <div className="h-fit !w-fit card  !flex-row !p-0 relative">
+                <div
+                  className="bg-[#03AE5A] rounded-lg absolute left-0 top  h-full z-0"
+                  style={{
+                    width: `${
+                      (myTokenAmount.claimed / myTokenAmount.total) * 100
+                    }%`,
+                  }}
+                />
+                {[
+                  {
+                    id: 2,
+                    name: "March",
+                  },
+                  {
+                    id: 3,
+                    name: "April",
+                  },
+                  {
+                    id: 4,
+                    name: "May",
+                  },
+                  {
+                    id: 5,
+                    name: "June",
+                  },
+                  {
+                    id: 6,
+                    name: "July",
+                  },
+                  {
+                    id: 7,
+                    name: "August",
+                  },
+                  {
+                    id: 8,
+                    name: "September",
+                  },
+                  {
+                    id: 9,
+                    name: "October",
+                  },
+                  {
+                    id: 10,
+                    name: "November",
+                  },
+                  {
+                    id: 11,
+                    name: "December",
+                  },
+                  {
+                    id: 12,
+                    name: "January",
+                  },
+                  {
+                    id: 1,
+                    name: "February",
+                  },
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex z-10 border-2 rounded-md border-transparent p-2 gap-3 items-center"
+                    style={{
+                      //this month active
+                      borderColor:
+                        new Date().getMonth() + 1 === item.id ? "#03AE5A" : "",
+                    }}
+                  >
+                    <span>{item.name}</span>
+                  </div>
+                ))}
+              </div>
+              <span className="text-xs dark:text-white/60 text-black/60">
+                {myTokenAmount.claimedMonth} / 12 M
               </span>
             </div>
-            <div className="grid grid-cols-3 gap-10">
-              <h2>April 2024</h2>
-              <h2>200 SIT</h2>
+            <div className="flex flex-col gap-10">
+              <div className="grid grid-cols-3 gap-10">
+                <h2>March 2024</h2>
+                <h2>200 SIT</h2>
+                <span className="text-sittaris-800 flex gap-2 items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M19.6585 6.24744C20.0742 6.61112 20.1163 7.24288 19.7526 7.65852L11.0026 17.6585C10.6403 18.0726 10.0114 18.1162 9.59546 17.756L4.34546 13.2106C3.92792 12.8491 3.8825 12.2175 4.244 11.8C4.6055 11.3825 5.23704 11.337 5.65457 11.6985L10.1525 15.5929L18.2474 6.34151C18.6111 5.92587 19.2429 5.88375 19.6585 6.24744Z"
+                      fill="#03AE58"
+                    />
+                  </svg>
+                  Claimed
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-10">
+                <h2>April 2024</h2>
+                <h2>200 SIT</h2>
+              </div>
             </div>
+            <button className="inlineBtn  w-1/3 2xl:w-1/4 mt-6">Claim</button>
           </div>
-          <button className="inlineBtn  w-1/3 2xl:w-1/4 mt-6">Claim</button>
-        </div>
+        )}
       </div>
     </MainLayout>
   );
