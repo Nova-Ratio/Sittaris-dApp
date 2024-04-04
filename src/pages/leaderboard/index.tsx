@@ -23,7 +23,7 @@ export default function LeaderBoard() {
     key: "plants/P25829",
     name: Zones[0]?.name || "Zone 1",
   });
-  const { price } = useAppSelector(selectData)
+  const { price } = useAppSelector(selectData);
   const [status, setStatus] = useState(false);
   return (
     <MainLayout title="Home">
@@ -32,13 +32,26 @@ export default function LeaderBoard() {
         description="Lorem ipsum dolor sit amet consectetur. Nibh rhoncus cras ultricies diam arcu venenatis gravida purus. Massa consectetur purus risus tincidunt volutpat in cursus. Quam mi facilisis purus vel in. Elit est non elit scelerisque id accumsan purus tellus."
       />
       <div className=" px-3 flex flex-col gap-6">
-        <h3 className={`${"font-fontspringBold"} font-semibold`}>
-          LeaderBoard
-        </h3>
+        <div className="flex justify-between items-center gap-6 w-full ">
+          <h3 className={`${"font-fontspringBold"} font-semibold`}>
+            LeaderBoard
+          </h3>
+          <div className="flex flex-col h-fit gap-2 items-center">
+            <h4>Current currency: {status ? "SIT" : "USD"} </h4>
+            <button
+              onClick={() => setStatus(!status)}
+              className="flex items-center gap-2"
+            >
+              <SwitchIcon />
+              Switch to SIT
+              <Token amount={""} />
+            </button>
+          </div>
+        </div>
         <div className="px-0 flex w-full gap-3 md:gap-6 lg:gap-10 2xl:gap-16">
           <div className="w-2/3  gap-6 flex flex-col ">
-            {/* <div className="flex justify-between gap-6 w-full">
-              <div className="w-2/3 max-w-sm">
+            <div className="flex justify-between gap-6 w-full">
+              {/* <div className="w-2/3 max-w-sm">
                 <ZoneDropDown
                   placement="bottom-end"
                   setZone={setZone}
@@ -53,19 +66,8 @@ export default function LeaderBoard() {
                     }) || []
                   }
                 />
-              </div>
-              <div className="flex flex-col h-fit gap-2 items-center">
-                <h4>Current currency: {status ? "SIT" : "USD"} </h4>
-                <button
-                  onClick={() => setStatus(!status)}
-                  className="flex items-center gap-2"
-                >
-                  <SwitchIcon />
-                  Switch to SIT
-                  <Token amount={""} />
-                </button>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
             <div className="grid grid-cols-3 gap-5">
               {[
                 {
@@ -100,23 +102,20 @@ export default function LeaderBoard() {
                     </span>
                   </div>
                   <div className="flex flex-col dark:text-white/80 text-black/80">
-                    <span className="text-xs">Daily Reward</span>${
-                     status ?  item.reward / price : item.reward
-                    }{" "}
+                    <span className="text-xs">Daily Reward</span>$
+                    {status ? item.reward / price : item.reward}{" "}
                     {status ? "SIT" : "USD"}
                   </div>
                 </div>
               ))}
             </div>
             <div className="grid grid-cols-7 border border-black/30 dark:border-white/30 rounded-full p-2">
-              {[
-                "No",
-                "Address",
-                "Point",
-              ].map((item, index) => (
+              {["No", "Address", "Point"].map((item, index) => (
                 <div
                   key={index}
-                  className={`flex first:col-span-1  items-center w-full justify-center  ${index === 1 ? ' col-span-4' : ' col-span-2 '} `}
+                  className={`flex first:col-span-1  items-center w-full justify-center  ${
+                    index === 1 ? " col-span-4" : " col-span-2 "
+                  } `}
                 >
                   <h5 className="text-xs">{item}</h5>
                 </div>
@@ -126,44 +125,44 @@ export default function LeaderBoard() {
               {[
                 {
                   userId: "11",
-                  point:7600,
-                  address:  "inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 5,
                 },
                 {
                   userId: "22",
-                  point:7600,
-                  address:"inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 4,
                 },
                 {
                   userId: "33",
-                  point:7600,
-                  address:"inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 3,
                 },
                 {
                   userId: "45",
-                  point:7600,
-                  address:"inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 3,
                 },
                 {
                   userId: "57",
-                  point:7600,
-                  address:"inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 2,
                 },
                 {
                   userId: "69",
-                  point:7600,
-                  address:"inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 2,
                 },
                 {
                   userId: "71",
-                  point:7600,
-                  address:"inj1akqp…8g3xu",
+                  point: 7600,
+                  address: "inj1akqp…8g3xu",
                   level: 1,
                 },
               ].map((item, index) => (
@@ -174,14 +173,14 @@ export default function LeaderBoard() {
                   <span className=" col-span-4 w-full text-center ">
                     {item?.address}
                   </span>
-                 {/*  <div className="col-span-2 w-full flex justify-center">
+                  {/*  <div className="col-span-2 w-full flex justify-center">
                     <span
                       className={`  w-fit text-center min-w-16 py-0 font-semibold text-white level${item.level} `}
                     >
                       Level {item?.level}
                     </span>
                   </div> */}
-                 
+
                   {/* <span className=" col-span-2 w-full text-center ">
                     {
                      status ?  (item.reward / price) + ' SIT' : '$'+ item.reward
@@ -189,9 +188,7 @@ export default function LeaderBoard() {
                   </span> */}
 
                   <span className=" col-span-2 w-full text-center ">
-                    {
-                      item.point
-                    }
+                    {item.point}
                   </span>
                 </>
               ))}
