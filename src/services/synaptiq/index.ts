@@ -9,7 +9,7 @@ export default function Synaptiq() {
     try {
       let data = {
         user: "trioassets",
-        password: "Trioinvest123!",
+        password: "Trioinvest123!.",
       };
       let res = await fetch(url + "/login", {
         method: "POST",
