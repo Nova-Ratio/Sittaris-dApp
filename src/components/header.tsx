@@ -34,6 +34,7 @@ export default function Header({
     change,
     sitData: data,
     address,
+    chainId,
   } = useAppSelector(selectData);
   const [usdcBalance, setUsdcBalance] = useState(0);
   const dispatch = useAppDispatch();
@@ -42,11 +43,13 @@ export default function Header({
   async function initialize() {
     dispatch(setLoading(true));
     try {
-      const address = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
       console.log("address", address);
+      
       if (address) {
+        const address = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        console.log("address", address);
         const decimals: number = await callPaymentTokenDecimals();
         console.log("decimals", decimals);
         let sitBalance = Number(await callBalanceOfSit(address[0]));

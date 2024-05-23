@@ -126,12 +126,11 @@ export default function useMetamask({
     const { provider, ethereum } = Ethers();
 
     const chainID = "0x61";
-    //console.log("chainID", chainID, id, chainId, address);
+    console.log("chainID", chainID, id, chainId, address);
 
-    if (id.toString() !== chainID && address) {
-      //dispatch(setClear());
-      /* console.log("chainId", chainId);
-      console.log("chain", chain[chainId]); */
+    if (id.toString() !== chainID ) {
+      console.log("id", id, chainID, chain[id]);
+      
       const { name } = chain[id] || { name: "UNKNOW" };
       const fromNetwork = name || "Unknown Network";
       const toNetwork = chain[chainID]?.name || "Binance Smart Chain 2";
@@ -145,6 +144,9 @@ export default function useMetamask({
         title: "Network Changed",
       });
       //router.reload();
+      return true;
+    } else {
+      return false;
     }
   };
   //console.log("chainId", chainId);
@@ -154,52 +156,23 @@ export default function useMetamask({
       const { provider, ethereum } = Ethers();
 
       await ethereum.send("eth_requestAccounts");
+      const address = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       let chainIdNow = await ethereum.request({ method: "eth_chainId" });
-
-      /* if (chainId.toString() !== chainIdNow) {
-        try {
-          await ethereum?.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: chain[chainId].chainId }],
-          });
-        } catch (error) {
-          await ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [
-              {
-                chainId: chain[chainId].chainId,
-                chainName: chain[chainId].name,
-                nativeCurrency: {
-                  name: chain[chainId].nativeCurrency.name,
-                  symbol: chain[chainId].nativeCurrency.symbol,
-                  decimals: 18,
-                },
-                rpcUrls: chain[chainId].rpcUrls,
-                blockExplorerUrls: chain[chainId].blockExplorerUrls,
-              },
-            ],
-          });
-        }
-      } */
+      let res = await CheckChain(chainIdNow);
+      console.log("res", res);
 
       const signer = await provider?.getSigner();
 
       let signature = await signer.signMessage("Connect To Sittaris dApp");
 
-      const [address /* , chainIdNow, networkName */] = await Promise.all([
-        signer.getAddress(),
-        signer.provider
-          .getNetwork()
-          .then((network: { chainId: any }) => network.chainId),
-        signer.provider
-          .getNetwork()
-          .then((network: { name: any }) => network.name),
-      ]);
+      
       //console.log("address", address);
-      localStorage.setItem("address", address);
 
       //console.log("chainId", chainId);
-      if (signature) {
+      if (signature && res && address) {
+        localStorage.setItem("address", address);
         Close();
         dispatch(setAddress(address));
         ToastSuccess({}).fire({
@@ -210,7 +183,6 @@ export default function useMetamask({
       //dispatch(setChainId(chainId));
       //console.log("chainIdNow", chainIdNow, chainId, chain[chainId].chainId);
 
-      CheckChain(chainIdNow);
       //router.push("/my-account");
     } catch (error) {
       console.log("error", error);
